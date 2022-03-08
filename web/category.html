@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Category | HAIBCA MP 13</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="css/all.css">
+    <script src="https://kit.fontawesome.com/fbe463b365.js" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <script defer src="./js/bootstrap.bundle.min.js"></script>
+</head>
+
+<body>
+    <nav id="side-nav">
+        <div class="container">
+            <div class="row">
+                <div class="col text-center">
+                    <div class="logo btn btn-outline-primary mt-4">
+                        <div class="row py-1 px-4">
+                            <div class="col p-0">
+                                <h1 class="m-0">13</h1>
+                            </div>
+                            <div class="col p-0">
+                                <h6 class="m-0 py-2">HAIBCA</h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col text-center">
+                    <h6>Hi, <b>Kurniawan</b></h6>
+                </div>
+            </div>
+            <div class="row my-5">
+                <div class="col">
+                    <div class="list-group">
+                        <a href="#Product" class="list-group-item border-0 btn btn-light my-2">
+                            <div class="row">
+                                <div class="col-2"><i class="fa-solid fa-box-open"></i></div>
+                                <div class="col">Product</div>
+                            </div>
+                        </a>
+                        <a href="#Category" class="list-group-item border-0 btn btn-light my-2 active">
+                            <div class="row">
+                                <div class="col-2"><i class="fa-solid fa-boxes-stacked"></i></div>
+                                <div class="col">Category</div>
+                            </div>
+                        </a>
+                        <a href="#User" class="list-group-item border-0 btn btn-light my-2">
+                            <div class="row">
+                                <div class="col-2"><i class="fa-solid fa-user-large"></i></div>
+                                <div class="col">User</div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-5">
+                <div class="col">
+                    <button id="btn-logout" class="btn btn-outline-danger form-control border-0">
+                        <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                        Logout
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <section id="content category">
+        <div class="container pt-4 px-4">
+            <div class="row">
+                <div class="col text-start">
+                    <h3 class="fw-bold">Product Category List</h3>
+                </div>
+                <div id="weather" class="col text-end">
+                    <p>
+                        <img src="./assets/weather/cloudly.png" class="py-2 me-2 align-middle">
+                        Central Klaten, <span class="temperature">26&#176;C</span> Mostly Cloudly</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col text-end">
+                    <button class="btn btn-success py-2 ps-3 pe-4" data-bs-toggle="modal"
+                        data-bs-target="#addCategoryModal">
+                        <i class="fa-solid fa-plus me-2"></i>Add Category
+                    </button>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th scope="col">
+                                        <input type="checkbox">
+                                    </th>
+                                    <th scope="col">Category</th>
+                                    <th scope="col">Description</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <input type="checkbox">
+                                    </td>
+                                    <td>Peralatan Kantor</td>
+                                    <td>Description here</td>
+                                    <td>
+                                        <div class="table-action">
+                                            <button class="btn btn-outline-success" data-bs-toggle="modal"
+                                                data-bs-target="#viewCategoryModal"><i
+                                                    class="fa-solid fa-eye"></i></button>
+                                            <button class="btn btn-outline-primary" data-bs-toggle="modal"
+                                                data-bs-target="#editCategoryModal"><i
+                                                    class="fa-solid fa-pen-to-square"></i></button>
+                                            <button class="btn btn-outline-danger" data-bs-toggle="modal"
+                                                data-bs-target="#deleteCategoryModal"><i
+                                                    class="fa-solid fa-trash-can"></i></button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <input type="checkbox">
+                                    </td>
+                                    <td>Peralatan Dapur</td>
+                                    <td>Description here</td>
+                                    <td>
+                                        <div class="table-action">
+                                            <button class="btn btn-outline-success" data-bs-toggle="modal"
+                                                data-bs-target="#viewCategoryModal"><i
+                                                    class="fa-solid fa-eye"></i></button>
+                                            <button class="btn btn-outline-primary" data-bs-toggle="modal"
+                                                data-bs-target="#editCategoryModal"><i
+                                                    class="fa-solid fa-pen-to-square"></i></button>
+                                            <button class="btn btn-outline-danger" data-bs-toggle="modal"
+                                                data-bs-target="#deleteCategoryModal"><i
+                                                    class="fa-solid fa-trash-can"></i></button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <input type="checkbox">
+                                    </td>
+                                    <td>Furniture</td>
+                                    <td>112233435</td>
+                                    <td>
+                                        <div class="table-action">
+                                            <button class="btn btn-outline-success" data-bs-toggle="modal"
+                                                data-bs-target="#viewCategoryModal"><i
+                                                    class="fa-solid fa-eye"></i></button>
+                                            <button class="btn btn-outline-primary" data-bs-toggle="modal"
+                                                data-bs-target="#editCategoryModal"><i
+                                                    class="fa-solid fa-pen-to-square"></i></button>
+                                            <button class="btn btn-outline-danger" data-bs-toggle="modal"
+                                                data-bs-target="#deleteCategoryModal"><i
+                                                    class="fa-solid fa-trash-can"></i></button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div id="pagination" class="row">
+                <div class="col-3 ms-auto">
+                    <div class="row">
+                        <div class="col p-0 text-end">
+                            <button class="btn btn-light rounded-circle">
+                                <i class="fa-solid fa-angle-left"></i>
+                            </button>
+                        </div>
+                        <div class="col p-0 mx-2 text-center">
+                            <input type="text" class="form-control text-center w-80" value="1">
+                        </div>
+                        <div class="col p-0">
+                            <button class="btn btn-light rounded-circle">
+                                <i class="fa-solid fa-angle-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="modal fade" id="addCategoryModal" tabindex="-1" aria-labelledby="addCategoryModal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form action="">
+                    <div class="modal-body">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col text-center">
+                                    <h5 class="fw-bold">Add Category</h5>
+                                </div>
+                            </div>
+                            <div class="row my-3">
+                                <div class="col">
+                                    <label for="add-category-name" class="form-label">Category Name</label>
+                                    <input type="text" class="form-control" id="add-category-name">
+                                </div>
+                            </div>
+                            <div class="row my-3">
+                                <div class="col">
+                                    <label for="add-category-description" class="form-label">Description</label>
+                                    <textarea type="text" class="form-control" id="add-category-description" cols="30" rows="10"></textarea>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col text-end">
+                                    <button type="submit" class="btn btn-primary px-4 me-2" id="add-category-submit">
+                                        Submit
+                                    </button>
+                                    <button class="btn btn-secondary px-4" data-bs-dismiss="modal">
+                                        Cancel
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="editCategoryModal" tabindex="-1" aria-labelledby="editCategoryModal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form action="">
+                    <div class="modal-body">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col text-center">
+                                    <h5 class="fw-bold">Edit Category</h5>
+                                </div>
+                            </div>
+                            <div class="row my-3">
+                                <div class="col">
+                                    <label for="edit-category-name" class="form-label">Category Name</label>
+                                    <input type="text" class="form-control" id="edit-category-name">
+                                </div>
+                            </div>
+                            <div class="row my-3">
+                                <div class="col">
+                                    <label for="edit-category-description" class="form-label">Description</label>
+                                    <textarea type="text" class="form-control" id="edit-category-description" cols="30" rows="10"></textarea>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col text-end">
+                                    <button type="submit" class="btn btn-primary px-4 me-2" id="edit-category-submit">
+                                        Update
+                                    </button>
+                                    <button class="btn btn-secondary px-4" data-bs-dismiss="modal">
+                                        Cancel
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="viewCategoryModal" tabindex="-1" aria-labelledby="viewCategoryModal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form action="">
+                    <div class="modal-body">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col text-center">
+                                    <h5 class="fw-bold">View Category</h5>
+                                </div>
+                            </div>
+                            <div class="row my-3">
+                                <div class="col">
+                                    <label for="add-category-name" class="form-label">Category Name</label>
+                                    <input type="text" class="form-control" id="add-category-name" disabled>
+                                </div>
+                            </div>
+                            <div class="row my-3">
+                                <div class="col">
+                                    <label for="add-category-description" class="form-label">Description</label>
+                                    <textarea type="text" class="form-control" id="add-category-description" cols="30" rows="10" disabled></textarea>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col text-end">
+                                    <button type="submit" class="btn btn-primary px-4 me-2" id="view-category-confirm">
+                                        Confirm
+                                    </button>
+                                    <button class="btn btn-secondary px-4" data-bs-dismiss="modal">
+                                        Cancel
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="deleteCategoryModal" tabindex="-1" aria-labelledby="deleteCategoryModal"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col text-center">
+                                <h5 class="fw-light">Are you sure want to delete this Category?</h5>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col text-center">
+                                <a href="#" class="btn btn-primary px-4 me-2">
+                                    Yes
+                                </a>
+                                <button class="btn btn-secondary px-4" data-bs-dismiss="modal">
+                                    Cancel
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
