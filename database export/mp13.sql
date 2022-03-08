@@ -25,3 +25,24 @@ CREATE TABLE IF NOT EXISTS categories(
 ALTER TABLE products
 	ADD FOREIGN KEY(categoryId) REFERENCES categories(categoryId)
 			ON DELETE CASCADE;
+    
+INSERT INTO categories 
+VALUES
+	(0, "No Category", "Empty Category"),
+	(NULL, "Furniture", "Perabotan rumah tangga dan furniture"),
+    (NULL, "Food", "Makanan dan Minuman"),
+    (NULL, "Building", "Material Bangunan");
+    
+INSERT INTO products 
+VALUES
+	(NULL, "Meja Makan", 1, 10),
+	(NULL, "Meja Minum", 1, 20),
+	(NULL, "Meja Saja", 1, 2),
+    (NULL, "Sambal Pak Udin", 2, 1),
+    (NULL, "Saos Bu Ayu", 2, 2),
+    (NULL, "Bata Hijau", 3, 0);
+
+/*pass = admin123*/
+INSERT INTO users
+VALUES
+	(NULL, "admin@admin.com", "75cc147ca175c351d37b62224e179d5f13cd8c8709557425a938fdb24aa67231", "41R4rsTyEvjRxYar3Trm8PSiRr21hqnm", "Admin Database Udin", 1, '2021-12-14', '2022-02-15');
