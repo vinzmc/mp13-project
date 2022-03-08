@@ -35,12 +35,12 @@ VALUES
     
 INSERT INTO products 
 VALUES
-	(NULL, "Meja Makan", 1, 10),
-	(NULL, "Meja Minum", 1, 20),
-	(NULL, "Meja Saja", 1, 2),
-    (NULL, "Sambal Pak Udin", 2, 1),
-    (NULL, "Saos Bu Ayu", 2, 2),
-    (NULL, "Bata Hijau", 3, 0);
+	(NULL, "Meja Makan", 2, 10),
+	(NULL, "Meja Minum", 2, 20),
+	(NULL, "Meja Saja", 2, 2),
+    (NULL, "Sambal Pak Udin", 3, 1),
+    (NULL, "Saos Bu Ayu", 3, 2),
+    (NULL, "Bata Hijau", 4, 0);
 
 /*pass = admin123*/
 INSERT INTO users
