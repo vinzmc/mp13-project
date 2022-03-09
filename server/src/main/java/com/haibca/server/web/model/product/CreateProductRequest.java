@@ -1,6 +1,6 @@
 package com.haibca.server.web.model.product;
 
-import com.haibca.server.entity.Category;
+import com.haibca.server.validation.CategoryExists;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,11 +18,12 @@ import org.hibernate.validator.constraints.Length;
 @AllArgsConstructor
 public class CreateProductRequest {
     @NotBlank
-    @Length(min = 3, max = 255)
+    @Length(max = 255)
     String productName;
 
     @NotNull
     @Min(value = 1)
+    @CategoryExists
     Integer categoryId;
 
     @NotNull
