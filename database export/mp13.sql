@@ -28,7 +28,7 @@ ALTER TABLE products
     
 INSERT INTO categories 
 VALUES
-	(0, "No Category", "Empty Category"),
+	(NULL, "No Category", "Empty Category"),
 	(NULL, "Furniture", "Perabotan rumah tangga dan furniture"),
     (NULL, "Food", "Makanan dan Minuman"),
     (NULL, "Building", "Material Bangunan");
