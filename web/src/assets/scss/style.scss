@@ -1,0 +1,271 @@
+/*!
+ * Bootstrap v5.1.3 (https://getbootstrap.com/)
+ * Copyright 2011-2021 The Bootstrap Authors
+ * Copyright 2011-2021 Twitter, Inc.
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
+ */
+
+// Font
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap");
+// Color Variable
+@import "color-variables";
+// scss-docs-start import-stack
+// Configuration
+@import "functions";
+@import "variables";
+@import "mixins";
+@import "utilities";
+
+// Layout & components
+@import "root";
+@import "reboot";
+@import "type";
+@import "images";
+@import "containers";
+@import "grid";
+@import "tables";
+@import "forms";
+@import "buttons";
+@import "transitions";
+@import "dropdown";
+@import "button-group";
+@import "nav";
+@import "navbar";
+@import "card";
+@import "accordion";
+@import "breadcrumb";
+@import "pagination";
+@import "badge";
+@import "alert";
+@import "progress";
+@import "list-group";
+@import "close";
+@import "toasts";
+@import "modal";
+@import "tooltip";
+@import "popover";
+@import "carousel";
+@import "spinners";
+@import "offcanvas";
+@import "placeholders";
+
+// Helpers
+@import "helpers";
+
+// Utilities
+@import "utilities/api";
+// scss-docs-end import-stack
+
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+
+.btn-success {
+    background-color: $green;
+    border: 0;
+
+    &:hover {
+        background-color: #40B480;
+        text-decoration: underline;
+    }
+
+}
+
+.logo-icon {
+    text-align: center;
+
+    h1 {
+        margin: 0;
+        margin-bottom: -10px;
+        color: $blue;
+        font-size: 48px;
+    }
+
+    h5 {
+        font-size: 24px;
+        font-weight: 500;
+    }
+}
+
+section#login .form-group .form-control {
+    border-radius: 0;
+}
+
+section#login .form-group input.form-control::placeholder {
+    color: #A7A7A7;
+}
+
+section#login .form-group input.form-control:focus {
+    border-color: $blue;
+    outline: none;
+    box-shadow: none;
+}
+
+section#login .form-group .form-control:first-child {
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+
+section#login .form-group .form-control:last-child {
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    border-top: 0;
+}
+
+section#login .form-group .btn-primary {
+    background-color: $blue;
+    border-color: $blue;
+}
+
+section#login .form-group .btn-primary:hover,
+section#login .form-group .btn-primary:active,
+section#login .form-group .btn-primary:focus {
+    background-color: #009ee2;
+    border-color: #009ee2;
+}
+
+
+nav#side-nav {
+    width: 16.66666667%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    background: #ffffff;
+    border: 0.5px solid #E5E5E5;
+    border-radius: 0;
+
+    .list-group-item {
+        color: #8E8E8E;
+        border-radius: 8px;
+
+        &:hover {
+            text-decoration: underline;
+            background-color: #F0F0F0;
+        }
+    }
+}
+
+nav#side-nav .list-group-item.active {
+    color: #ffffff;
+    background-color: $blue;
+
+    &:hover {
+        background-color: $blue;
+    }
+}
+
+nav#side-nav {
+    .logo {
+        &.btn {
+            border-color: #E5E5E5;
+            border-radius: 8px;
+
+            &:hover {
+                background-color: #F9FAFB;
+                border-color: #A7A7A7;
+            }
+        }
+
+        h1 {
+            margin: 0;
+            color: $blue;
+            font-size: 36px;
+        }
+
+        h6 {
+            color: $black;
+            font-size: 20px;
+        }
+    }
+
+    #btn-logout {
+        border-radius: 8px;
+
+        svg {
+            margin-right: 0.5rem;
+        }
+
+        &:hover {
+            color: $white;
+        }
+    }
+}
+
+section {
+    margin-left: 16.66666667%;
+}
+
+#weather .temperature {
+    color: $blue;
+}
+
+.table-action .btn {
+    border: 0;
+}
+
+div.modal .modal-content {
+    border-radius: 8px;
+    border: 2px solid $blue;
+}
+
+div.modal .modal-content label.form-label {
+    margin: 0;
+    font-weight: 600;
+}
+
+div.modal .modal-content .btn-primary {
+    background-color: $blue;
+    border: 0;
+}
+
+div.modal .modal-content .btn-primary:focus,
+div.modal .modal-content .btn-primary:active,
+div.modal .modal-content .btn-primary:hover {
+    background-color: #009ee2;
+    border-color: #009ee2;
+}
+
+div.modal .modal-content .btn-secondary {
+    background-color: #F0F0F0;
+    color: #8E8E8E;
+    border: 0;
+}
+
+div.modal .modal-content .btn-secondary:focus,
+div.modal .modal-content .btn-secondary:active,
+div.modal .modal-content .btn-secondary:hover {
+    background-color: #8E8E8E;
+    color: #F0F0F0;
+}
+
+div#pagination {
+    input.form-control {
+        width: 80%;
+        margin: 0 auto;
+    }
+
+    .btn.btn-light {
+        background-color: #ffffff;
+        border: 1px solid #8E8E8E;
+        color: #8E8E8E;
+
+        &:focus,
+        &:active,
+        &:hover {
+            background-color: $blue;
+            color: #ffffff;
+            border-color: $blue;
+        }
+    }
+}
+
+table.table tr td:first-child,
+table.table tr th:first-child {
+    padding-left: 0.75rem;
+    text-align: center;
+}
