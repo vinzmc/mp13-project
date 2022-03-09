@@ -6,7 +6,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Data
@@ -16,7 +18,7 @@ import java.util.Date;
 public class UpdateUserRequest {
 
     @NotBlank
-    @Length(min = 4, max = 255)
+    @Length(max = 120)
     String email;
 
     @NotBlank
@@ -24,11 +26,9 @@ public class UpdateUserRequest {
     String pwd;
 
     @NotBlank
+    @Length(max = 255)
     String name;
 
-    @NotBlank
+    @NotNull
     Integer level;
-
-    @NotBlank
-    Date lastAccess;
 }

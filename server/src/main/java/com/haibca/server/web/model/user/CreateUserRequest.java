@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Data
@@ -15,7 +16,7 @@ import java.util.Date;
 @AllArgsConstructor
 public class CreateUserRequest {
     @NotBlank
-    @Length(min = 4, max = 255)
+    @Length(min = 4, max = 120)
     String email;
 
     @NotBlank
@@ -27,14 +28,15 @@ public class CreateUserRequest {
     String salt;
 
     @NotBlank
+    @Length(max = 255)
     String name;
 
-    @NotBlank
+    @NotNull
     Integer level;
 
-    @NotBlank
+    @NotNull
     Date created;
 
-    @NotBlank
+    @NotNull
     Date lastAccess;
 }
