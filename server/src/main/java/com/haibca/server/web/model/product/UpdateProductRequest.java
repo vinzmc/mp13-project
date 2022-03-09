@@ -5,14 +5,18 @@ import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 public class UpdateProductRequest {
+
     @NotBlank
     @Length(min = 4, max = 255)
-    String name;
+    String productName;
 
-    Category category;
+    @NotNull
+    @Min(value = 1)
+    Integer categoryId;
 
     @Min(value = 0)
-    Integer stock;
+    Integer productStock;
 }
