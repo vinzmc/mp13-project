@@ -13,7 +13,7 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Response<T> {
-    private Integer status; // Status code (200, 400, 404)
+    private Integer status; // Status code (200, 400, 500)
 
     private T data;
 
