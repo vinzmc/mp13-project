@@ -46,12 +46,20 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Transactional(rollbackFor = { Exception.class })
     public Product update(Integer id, UpdateProductRequest request) {
-        return null;
+        Product product = productRepository.getById(id);
+        BeanUtils.copyProperties(request, product);
+        if(!request.getCategoryId().equals(product.getProductId())){
+            Category category = categoryRepository.getById(request.getCategoryId());
+            product.setCategory(category);
+        }
+
+        return productRepository.save(product);
     }
 
     @Override
     public void deleteById(Integer id) {
-
+        productRepository.deleteById(id);
     }
 }
