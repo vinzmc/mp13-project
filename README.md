@@ -12,3 +12,6 @@ HAI BCA 2022 Project Repository
 4. Open the server folder (Intelij)
 5. Load the maven (wait untill all dependecy downloaded) 
 6. Run
+
+## Opening website
+http://localhost:8080/mp13/api/products
