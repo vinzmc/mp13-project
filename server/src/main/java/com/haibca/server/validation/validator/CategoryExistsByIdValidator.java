@@ -1,14 +1,13 @@
 package com.haibca.server.validation.validator;
 
 import com.haibca.server.repository.CategoryRepository;
-import com.haibca.server.repository.ProductRepository;
-import com.haibca.server.validation.ProductExists;
+import com.haibca.server.validation.CategoryExists;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-public class CategoryExistsByIdValidator implements ConstraintValidator<ProductExists, Integer> {
+public class CategoryExistsByIdValidator implements ConstraintValidator<CategoryExists, Integer> {
 
     @Autowired
     CategoryRepository categoryRepository;
