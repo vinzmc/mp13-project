@@ -15,7 +15,7 @@ import javax.persistence.*;
 @Table(name="categories")
 public class Category {
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "categoryid", columnDefinition = "UNSIGNED INT")
     private Integer categoryId;
 
