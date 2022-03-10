@@ -1,14 +1,17 @@
 package com.haibca.server.web.controller;
 
+import com.haibca.server.entity.Sessions;
 import com.haibca.server.entity.User;
 import com.haibca.server.helper.HashHandlerConstructor;
 import com.haibca.server.helper.UserResponseConstructor;
+import com.haibca.server.service.SessionService;
 import com.haibca.server.service.UserService;
 import com.haibca.server.validation.UserAuthValid;
 import com.haibca.server.validation.UserExists;
 import com.haibca.server.web.model.Response;
 import com.haibca.server.web.model.user.*;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,6 +36,9 @@ public class UserController {
 
     @Autowired
     HashHandlerConstructor hashHandlerConstructor;
+
+    @Autowired
+    SessionService sessionService;
 
     @Operation(summary = "Create new User")
     @PostMapping(
@@ -103,10 +109,24 @@ public class UserController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public Response<UserTokenResponse> authByEmail(@UserAuthValid @RequestBody @Valid UserAuthRequest request) {
         User user = userService.findByEmail(request.getUserEmail());
-        String token = hashHandlerConstructor.generateRandomString(64);
+        Sessions sessions = sessionService.create();
+
         return Response.<UserTokenResponse>builder()
                 .status(HttpStatus.OK.value())
-                .data(userResponseConstructor.toResponse(true, token, user))
+                .data(userResponseConstructor.toResponse(true, sessions, user))
+                .build();
+    }
+
+    @Operation(summary = "Sign in user by email")
+    @GetMapping(
+            path = "/api/users/signout/{sessionId}",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public Response<Boolean> signOut(@Parameter @PathVariable String sessionId) {
+        sessionService.deleteById(sessionId);
+
+        return Response.<Boolean>builder()
+                .status(HttpStatus.OK.value())
+                .data(true)
                 .build();
     }
 }

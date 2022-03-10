@@ -18,7 +18,11 @@ CREATE TABLE IF NOT EXISTS products(
 CREATE TABLE IF NOT EXISTS categories(
 	categoryId int unsigned PRIMARY KEY NOT NULL AUTO_INCREMENT,
     categoryName varchar(64) NOT NULL,	
-    categoryDetail varchar(255) NOT NULL);			
+    categoryDetail varchar(255) NOT NULL);
+    
+CREATE TABLE IF NOT EXISTS sessionsusers(
+	sessionid CHAR(64) PRIMARY KEY NOT NULL
+);
 
 ALTER TABLE products
 	ADD FOREIGN KEY(categoryId) REFERENCES categories(categoryId)

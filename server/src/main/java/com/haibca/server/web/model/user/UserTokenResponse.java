@@ -1,5 +1,6 @@
 package com.haibca.server.web.model.user;
 
+import com.haibca.server.entity.Sessions;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,6 +12,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class UserTokenResponse {
     Boolean authResult;
-    String authToken;
+    Sessions sessionsId;
     UserResponse userResponse;
 }

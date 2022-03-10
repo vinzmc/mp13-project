@@ -1,6 +1,7 @@
 package com.haibca.server.helper.impl;
 
 
+import com.haibca.server.entity.Sessions;
 import com.haibca.server.entity.User;
 import com.haibca.server.helper.UserResponseConstructor;
 import com.haibca.server.web.model.user.UserResponse;
@@ -35,12 +36,12 @@ public class UserResponseConstructorImpl implements UserResponseConstructor {
     }
 
     @Override
-    public UserTokenResponse toResponse(Boolean result, String token, User user) {
+    public UserTokenResponse toResponse(Boolean result, Sessions sessionsId, User user) {
         UserResponse userResponse = toResponse(user);
         return UserTokenResponse
                 .builder()
                 .userResponse(userResponse)
-                .authToken(token)
+                .sessionsId(sessionsId)
                 .authResult(result)
                 .build();
     }
