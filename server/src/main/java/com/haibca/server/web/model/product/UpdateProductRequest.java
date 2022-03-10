@@ -1,6 +1,5 @@
 package com.haibca.server.web.model.product;
 
-import com.haibca.server.entity.Category;
 import com.haibca.server.validation.CategoryExists;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

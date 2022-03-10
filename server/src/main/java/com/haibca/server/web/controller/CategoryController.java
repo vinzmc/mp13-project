@@ -1,17 +1,13 @@
 package com.haibca.server.web.controller;
 
 import com.haibca.server.entity.Category;
-import com.haibca.server.entity.Product;
 import com.haibca.server.helper.CategoryResponseConstructor;
 import com.haibca.server.service.CategoryService;
 import com.haibca.server.validation.CategoryExists;
-import com.haibca.server.validation.ProductExists;
 import com.haibca.server.web.model.Response;
 import com.haibca.server.web.model.category.CategoryResponse;
 import com.haibca.server.web.model.category.CreateCategoryRequest;
 import com.haibca.server.web.model.category.UpdateCategoryRequest;
-import com.haibca.server.web.model.product.ProductResponse;
-import com.haibca.server.web.model.product.UpdateProductRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;

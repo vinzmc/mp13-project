@@ -1,10 +1,8 @@
 package com.haibca.server.helper.impl;
 
 
-import com.haibca.server.entity.Category;
 import com.haibca.server.entity.Product;
 import com.haibca.server.helper.ProductResponseConstructor;
-import com.haibca.server.repository.ProductRepository;
 import com.haibca.server.web.model.category.CategoryResponse;
 import com.haibca.server.web.model.product.ProductResponse;
 import org.springframework.beans.BeanUtils;

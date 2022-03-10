@@ -1,8 +1,6 @@
 package com.haibca.server.validation.validator;
 
-import com.haibca.server.repository.CategoryRepository;
 import com.haibca.server.repository.UserRepository;
-import com.haibca.server.validation.CategoryExists;
 import com.haibca.server.validation.UserExists;
 import org.springframework.beans.factory.annotation.Autowired;
 

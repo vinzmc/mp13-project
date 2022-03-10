@@ -1,7 +1,6 @@
 package com.haibca.server.validation;
 
 import com.haibca.server.validation.validator.CategoryExistsByIdValidator;
-import com.haibca.server.validation.validator.ProductExistsByIdValidator;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;

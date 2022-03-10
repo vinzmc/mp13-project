@@ -1,9 +1,6 @@
 package com.haibca.server.validation;
 
-import com.haibca.server.entity.Product;
 import com.haibca.server.validation.validator.ProductExistsByIdValidator;
-import com.haibca.server.web.model.product.CreateProductRequest;
-import com.haibca.server.web.model.product.UpdateProductRequest;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
