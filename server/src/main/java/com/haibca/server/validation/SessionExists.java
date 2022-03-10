@@ -15,7 +15,7 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface SessionExists {
 
-    String message() default "Sessions does not exists!";
+    String message() default "Invalid Session!";
 
     Class<?>[] groups() default {};
 

@@ -5,6 +5,7 @@ import com.haibca.server.helper.impl.ProductResponseConstructorImpl;
 import com.haibca.server.service.ProductService;
 import com.haibca.server.validation.ProductExists;
 import com.haibca.server.web.model.Response;
+import com.haibca.server.web.model.SessionValidatorRequest;
 import com.haibca.server.web.model.product.CreateProductRequest;
 import com.haibca.server.web.model.product.ProductResponse;
 import com.haibca.server.web.model.product.UpdateProductRequest;
@@ -45,11 +46,12 @@ public class ProductController {
                 .build();
     }
 
-    @Operation(summary = "Get All Products")
-    @GetMapping(
-            path = "/api/products",
+    @Operation(summary = "Fetch All Products")
+    @PostMapping(
+            path = "/api/products/all",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response<List<ProductResponse>> findAll() {
+    public Response<List<ProductResponse>> findAll(@Valid @RequestBody SessionValidatorRequest request) {
         List<Product> product = productService.findAll();
         return Response.<List<ProductResponse>>builder()
                 .status(HttpStatus.OK.value())
@@ -58,10 +60,11 @@ public class ProductController {
     }
 
     @Operation(summary = "Find product by id.")
-    @GetMapping(
+    @PostMapping(
             path = "/api/products/{id}",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response<ProductResponse> findById(@ProductExists @PathVariable Integer id) {
+    public Response<ProductResponse> findById(@ProductExists @PathVariable Integer id, @Valid @RequestBody SessionValidatorRequest request) {
         Product product = productService.findById(id);
         return Response.<ProductResponse>builder()
                 .status(HttpStatus.OK.value())
@@ -86,8 +89,9 @@ public class ProductController {
     @Operation(summary = "Delete product by id.")
     @DeleteMapping(
             path = "/api/products/{id}",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response<Boolean> deleteById(@ProductExists @PathVariable Integer id) {
+    public Response<Boolean> deleteById(@ProductExists @PathVariable Integer id, @Valid @RequestBody SessionValidatorRequest request) {
         productService.deleteById(id);
         return Response.<Boolean>builder()
                 .status(HttpStatus.OK.value())

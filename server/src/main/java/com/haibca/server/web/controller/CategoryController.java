@@ -5,6 +5,7 @@ import com.haibca.server.helper.CategoryResponseConstructor;
 import com.haibca.server.service.CategoryService;
 import com.haibca.server.validation.CategoryExists;
 import com.haibca.server.web.model.Response;
+import com.haibca.server.web.model.SessionValidatorRequest;
 import com.haibca.server.web.model.category.CategoryResponse;
 import com.haibca.server.web.model.category.CreateCategoryRequest;
 import com.haibca.server.web.model.category.UpdateCategoryRequest;
@@ -42,11 +43,12 @@ public class CategoryController {
                 .build();
     }
 
-    @Operation(summary = "Get All category")
-    @GetMapping(
-            path = "/api/categories",
+    @Operation(summary = "Fetch All category")
+    @PostMapping(
+            path = "/api/categories/all",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response<List<CategoryResponse>> findAll() {
+    public Response<List<CategoryResponse>> findAll(@Valid @RequestBody SessionValidatorRequest request) {
         List<Category> category = categoryService.findAll();
         return Response.<List<CategoryResponse>>builder()
                 .status(HttpStatus.OK.value())
@@ -55,10 +57,11 @@ public class CategoryController {
     }
 
     @Operation(summary = "Find category by id.")
-    @GetMapping(
+    @PostMapping(
             path = "/api/categories/{id}",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response<CategoryResponse> findById(@CategoryExists @PathVariable Integer id) {
+    public Response<CategoryResponse> findById(@CategoryExists @PathVariable Integer id, @Valid @RequestBody SessionValidatorRequest request) {
         Category category = categoryService.findById(id);
         return Response.<CategoryResponse>builder()
                 .status(HttpStatus.OK.value())
@@ -85,8 +88,9 @@ public class CategoryController {
     @Operation(summary = "Delete category by id.")
     @DeleteMapping(
             path = "/api/categories/{id}",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response<Boolean> deleteById(@CategoryExists @PathVariable Integer id) {
+    public Response<Boolean> deleteById(@CategoryExists @PathVariable Integer id, @Valid @RequestBody SessionValidatorRequest request) {
         categoryService.deleteById(id);
         return Response.<Boolean>builder()
                 .status(HttpStatus.OK.value())
