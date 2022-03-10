@@ -33,4 +33,8 @@ public class User {
 
     @Column(name = "userlevel", columnDefinition = "INT")
     private Integer userLevel;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "usersession", referencedColumnName = "sessionid")
+    private Sessions userSession;
 }

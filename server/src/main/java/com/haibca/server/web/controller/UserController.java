@@ -6,6 +6,7 @@ import com.haibca.server.helper.HashHandlerConstructor;
 import com.haibca.server.helper.UserResponseConstructor;
 import com.haibca.server.service.SessionService;
 import com.haibca.server.service.UserService;
+import com.haibca.server.validation.SessionExists;
 import com.haibca.server.validation.UserAuthValid;
 import com.haibca.server.validation.UserExists;
 import com.haibca.server.web.model.Response;
@@ -108,7 +109,11 @@ public class UserController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public Response<UserTokenResponse> authByEmail(@UserAuthValid @RequestBody @Valid UserAuthRequest request) {
         User user = userService.findByEmail(request.getUserEmail());
+        if(user.getUserSession() != null){
+            sessionService.deleteById(user.getUserSession().getSessionid());
+        }
         Sessions sessions = sessionService.create();
+        userService.updateUserSession(user, sessions);
 
         return Response.<UserTokenResponse>builder()
                 .status(HttpStatus.OK.value())
@@ -117,10 +122,10 @@ public class UserController {
     }
 
     @Operation(summary = "Sign out user")
-    @GetMapping(
+    @DeleteMapping(
             path = "/api/users/signout/{sessionId}",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response<Boolean> signOut(@Parameter @PathVariable String sessionId) {
+    public Response<Boolean> signOut(@SessionExists @Parameter @PathVariable String sessionId) {
         sessionService.deleteById(sessionId);
 
         return Response.<Boolean>builder()
@@ -128,4 +133,18 @@ public class UserController {
                 .data(true)
                 .build();
     }
+
+    //use when needed
+//    @Operation(summary = "Sign out all user")
+//    @DeleteMapping(
+//            path = "/api/users/signout/all",
+//            produces = MediaType.APPLICATION_JSON_VALUE)
+//    public Response<Boolean> signOutAll() {
+//        sessionService.deleteAll();
+//
+//        return Response.<Boolean>builder()
+//                .status(HttpStatus.OK.value())
+//                .data(true)
+//                .build();
+//    }
 }

@@ -7,7 +7,8 @@ CREATE TABLE IF NOT EXISTS users(
     userPwd char(64) NOT NULL,
     userSalt char(32) NOT NULL,
     userName varchar(255) NOT NULL,
-    userLevel int NOT NULL);
+    userLevel int NOT NULL,
+    userSession CHAR(64));
 
 CREATE TABLE IF NOT EXISTS products(
 	productId int unsigned PRIMARY KEY NOT NULL AUTO_INCREMENT,
@@ -20,13 +21,17 @@ CREATE TABLE IF NOT EXISTS categories(
     categoryName varchar(64) NOT NULL,	
     categoryDetail varchar(255) NOT NULL);
     
-CREATE TABLE IF NOT EXISTS sessionsusers(
-	sessionid CHAR(64) PRIMARY KEY NOT NULL
+CREATE TABLE IF NOT EXISTS sessions(
+	sessionId CHAR(64) PRIMARY KEY NOT NULL
 );
 
 ALTER TABLE products
 	ADD FOREIGN KEY(categoryId) REFERENCES categories(categoryId)
 			ON DELETE CASCADE;
+
+ALTER TABLE users
+	ADD FOREIGN KEY(userSession) REFERENCES sessions(sessionId)
+			ON DELETE SET NULL;
     
 INSERT INTO categories 
 VALUES
@@ -47,4 +52,4 @@ VALUES
 /*pass = admin123*/
 INSERT INTO users
 VALUES
-	(NULL, "admin@admin.com", "75cc147ca175c351d37b62224e179d5f13cd8c8709557425a938fdb24aa67231", "41R4rsTyEvjRxYar3Trm8PSiRr21hqnm", "Admin Database Udin", 1);
+	(NULL, "admin@admin.com", "75cc147ca175c351d37b62224e179d5f13cd8c8709557425a938fdb24aa67231", "41R4rsTyEvjRxYar3Trm8PSiRr21hqnm", "Admin Database Udin", 1, null);

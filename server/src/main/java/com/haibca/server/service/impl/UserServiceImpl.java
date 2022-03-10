@@ -1,5 +1,6 @@
 package com.haibca.server.service.impl;
 
+import com.haibca.server.entity.Sessions;
 import com.haibca.server.entity.User;
 import com.haibca.server.helper.HashHandlerConstructor;
 import com.haibca.server.repository.UserRepository;
@@ -76,5 +77,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findByEmail(String email) {
          return userRepository.getUserByEmail(email);
+    }
+
+    @Override
+    public User updateUserSession(User user, Sessions sessions){
+        user.setUserSession(sessions);
+        userRepository.save(user);
+        return user;
     }
 }

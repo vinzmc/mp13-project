@@ -1,5 +1,6 @@
 package com.haibca.server.service;
 
+import com.haibca.server.entity.Sessions;
 import com.haibca.server.entity.User;
 import com.haibca.server.web.model.user.CreateUserRequest;
 import com.haibca.server.web.model.user.UpdateUserRequest;
@@ -13,4 +14,5 @@ public interface UserService {
     User update(Integer id, UpdateUserRequest request);
     void deleteById(Integer id);
     User findByEmail(String email);
+    User updateUserSession(User user, Sessions sessions);
 }
