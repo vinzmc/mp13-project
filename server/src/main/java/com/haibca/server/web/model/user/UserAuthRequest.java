@@ -1,10 +1,11 @@
 package com.haibca.server.web.model.user;
 
+import com.haibca.server.validation.PasswordValid;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.Length;
+import org.springframework.data.annotation.ReadOnlyProperty;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -14,20 +15,13 @@ import javax.validation.constraints.NotNull;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreateUserRequest {
+@PasswordValid
+public class UserAuthRequest {
     @NotBlank
-    @Length(min = 4, max = 120)
     @Email
     String userEmail;
 
-    @NotBlank
-    @Length(min = 64, max = 64)
-    String userPwd;
-
-    @NotBlank
-    @Length(max = 255)
-    String userName;
-
     @NotNull
-    Integer userLevel;
+    @ReadOnlyProperty
+    String hashedPass;
 }
