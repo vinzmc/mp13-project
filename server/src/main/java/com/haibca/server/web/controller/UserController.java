@@ -10,6 +10,7 @@ import com.haibca.server.validation.SessionExists;
 import com.haibca.server.validation.UserAuthValid;
 import com.haibca.server.validation.UserExists;
 import com.haibca.server.web.model.Response;
+import com.haibca.server.web.model.SessionValidatorRequest;
 import com.haibca.server.web.model.user.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -94,8 +95,10 @@ public class UserController {
     @Operation(summary = "Delete user by id.")
     @DeleteMapping(
             path = "/api/users/{id}",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response<Boolean> deleteById(@UserExists @PathVariable Integer id) {
+    public Response<Boolean> deleteById(@UserExists @PathVariable Integer id,
+                                        @Valid @RequestBody SessionValidatorRequest request) {
         userService.deleteById(id);
         return Response.<Boolean>builder()
                 .status(HttpStatus.OK.value())
@@ -106,6 +109,7 @@ public class UserController {
     @Operation(summary = "Sign in user by email")
     @PostMapping(
             path = "/api/users/signin",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public Response<UserTokenResponse> authByEmail(@UserAuthValid @RequestBody @Valid UserAuthRequest request) {
         User user = userService.findByEmail(request.getUserEmail());
@@ -122,11 +126,12 @@ public class UserController {
     }
 
     @Operation(summary = "Sign out user")
-    @DeleteMapping(
-            path = "/api/users/signout/{sessionId}",
+    @PostMapping(
+            path = "/api/users/signout",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response<Boolean> signOut(@SessionExists @Parameter @PathVariable String sessionId) {
-        sessionService.deleteById(sessionId);
+    public Response<Boolean> signOut(@Valid @RequestBody SessionValidatorRequest request) {
+        sessionService.deleteById(request.getSessionId());
 
         return Response.<Boolean>builder()
                 .status(HttpStatus.OK.value())
