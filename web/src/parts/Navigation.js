@@ -5,9 +5,14 @@ import { faBoxOpen, faBoxesStacked, faUserLarge, faArrowRightFromBracket } from 
 
 export default function Navigation() {
 
+
     const isActiveNavigation = (path) => {
         return document.location.pathname.split("/")[1] === path ? "active" : "";
     }
+
+    async function handleLogout(event) {
+    }
+
     return (
         <>
             <nav id="side-nav">
@@ -75,7 +80,7 @@ export default function Navigation() {
                     </div>
                     <div className="row mt-5">
                         <div className="col">
-                            <Button type="link" href="/logout" id="btn-logout" className="btn btn-outline-danger form-control border-0">
+                            <Button type="link" href="/logout" id="btn-logout" className="btn btn-outline-danger form-control border-0" onClick={handleLogout}>
                                 <div className="row">
                                     <div className="col-8 mx-auto">
                                         <div className="row">

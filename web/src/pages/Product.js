@@ -1,4 +1,4 @@
-import React, { Component, createRef, useEffect, useState } from "react";
+import React, { Component } from "react";
 import Button from "elements/Button";
 import Navigation from "parts/Navigation";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -22,18 +22,18 @@ export default class Product extends Component {
         fetch("http://localhost:8080/mp13/api/products")
             .then((response) => response.json())
             .then((responseJSON) => {
-                // this.setState({ products: responseJSON.data })
-                // pagination data spread
                 let data = []
                 let i = 0;
-                responseJSON.data.map((item, index) => {
-                    if (index == 0) {
+                let j = 0;
+                responseJSON.data.forEach((item) => {
+                    if (j === 0) {
                         data.push({ key: [] })
-                    } else if (index % 6 == 0) {
+                    } else if (j % 6 === 0) {
                         data.push({ key: [] })
                         i++
                     }
                     data[i].key.push(item)
+                    j++
                 })
                 this.setState({ products: data })
                 document.getElementById('pagination-data').setAttribute("max", data.length)
@@ -45,10 +45,10 @@ export default class Product extends Component {
 
     render() {
         const { products } = this.state;
-        const { crudStatus } = this.props.crudStatus;
+        const { crudStatus } = this.props;
 
         const pagination = (e) => {
-            if (e.target.value == e.target.getAttribute("max")) {
+            if (e.target.value === e.target.getAttribute("max")) {
                 this.setState({ page: parseInt(e.target.getAttribute("max")) })
                 return;
             }

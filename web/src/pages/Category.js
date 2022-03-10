@@ -23,14 +23,16 @@ export default class Category extends Component {
             .then((responseJSON) => {
                 let data = []
                 let i = 0;
-                responseJSON.data.map((item, index) => {
-                    if (index == 0) {
+                let j = 0;
+                responseJSON.data.forEach((item) => {
+                    if (j === 0) {
                         data.push({ key: [] })
-                    } else if (index % 6 == 0) {
+                    } else if (j % 6 === 0) {
                         data.push({ key: [] })
                         i++
                     }
                     data[i].key.push(item)
+                    j++
                 })
                 this.setState({ categories: data })
                 document.getElementById('pagination-data').setAttribute("max", data.length)
@@ -41,10 +43,10 @@ export default class Category extends Component {
     }
     render() {
         const { categories } = this.state;
-        const { crudStatus } = this.props.crudStatus;
+        const { crudStatus } = this.props;
 
         const pagination = (e) => {
-            if (e.target.value == e.target.getAttribute("max")) {
+            if (e.target.value === e.target.getAttribute("max")) {
                 this.setState({ page: parseInt(e.target.getAttribute("max")) })
                 return;
             }
