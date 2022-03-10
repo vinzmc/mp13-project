@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
-
 @Validated
 @RestController
 @Tag(name = "User Controller")
@@ -117,7 +116,7 @@ public class UserController {
                 .build();
     }
 
-    @Operation(summary = "Sign in user by email")
+    @Operation(summary = "Sign out user")
     @GetMapping(
             path = "/api/users/signout/{sessionId}",
             produces = MediaType.APPLICATION_JSON_VALUE)
