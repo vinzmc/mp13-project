@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Button from "elements/Button";
 import Navigation from "parts/Navigation";
 import { sha256 } from "js-sha256";
+import UserServices from "services/UserServices";
 
 export default class UserForm extends Component {
     constructor(props) {
@@ -13,29 +14,17 @@ export default class UserForm extends Component {
     }
 
     componentDidMount() {
-        document.title = `${document.location.pathname.split("/")[2]} User | HAIBCA13`;
+        document.title = `${this.props.location.pathname.split("/")[2]} User | HAIBCA13`;
         window.scrollTo(0, 0);
-        this.setState({ mode: document.location.pathname.split("/")[2] })
-
-        fetch("http://localhost:8080/mp13/api/users")
-            .then((response) => response.json())
-            .then((responseJSON) => this.setState({ users: responseJSON }))
-            .catch((error) => {
-                // console.log(error)
-            });
-
-        if (document.location.pathname.split("/").length > 2) {
-            fetch("http://localhost:8080/mp13/api/users/" + document.location.pathname.split("/")[3])
-                .then((response) => response.json())
-                .then((responseJSON) => {
-                    this.setState({ postData: responseJSON })
-                    document.getElementById('userName').value = responseJSON.data.userName;
-                    document.getElementById('userEmail').value = responseJSON.data.userEmail;
-                    document.getElementById('userLevel').value = responseJSON.data.userLevel;
-                })
-                .catch((error) => {
-                    // console.log(error)
-                });
+        this.setState({ mode: this.props.location.pathname.split("/")[2] })
+        if (this.props.match.params.id !== undefined) {
+            UserServices.GET(this.props.match.params.id).then((response) => {
+                const json = response.data
+                this.setState({ postData: json })
+                document.getElementById('userName').value = json.data.userName;
+                document.getElementById('userEmail').value = json.data.userEmail;
+                document.getElementById('userLevel').value = json.data.userLevel;
+            })
         }
     }
 
@@ -43,71 +32,42 @@ export default class UserForm extends Component {
         const { handlerStatus } = this.props;
 
         const addUser = () => {
-            const requestOptions = {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    userEmail: document.getElementById('userEmail').value,
-                    userPwd: sha256(document.getElementById('userPwd').value),
-                    userName: document.getElementById('userName').value,
-                    userLevel: parseInt(document.getElementById('userLevel').value)
-                })
-            };
-
-            console.log(requestOptions)
-
-            fetch('http://localhost:8080/mp13/api/users/', requestOptions)
-                .then(response => response.json())
-                .then(response => {
-                    console.log(response)
-                    handlerStatus({ response: { status: response.status, message: response.status === 200 ? 'User successfully added' : 'User failure added' } })
-                    if (response.status === 200) {
-                        document.getElementById("cancelButton").click()
-                    }
-                })
-                .catch((error) => {
-                    // console.log(error)
-                });
+            UserServices.POST({
+                userEmail: document.getElementById('userEmail').value,
+                userPwd: sha256(document.getElementById('userPwd').value),
+                userName: document.getElementById('userName').value,
+                userLevel: parseInt(document.getElementById('userLevel').value)
+            }).then((response) => {
+                handlerStatus({ response: { status: response.data.status, message: response.data.status === 200 ? `User successfully created` : `User failure creatd` } })
+                if (response.data.status === 200) {
+                    document.getElementById("cancelButton").click()
+                }
+            })
         }
 
         const editUser = () => {
-            let id = this.state.postData.data.userId
-            const requestOptions = {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    userEmail: document.getElementById('userEmail').value,
-                    userNewPwd: parseInt(document.getElementById('userNewPwd').value),
-                    userOldPwd: parseInt(document.getElementById('userOldPwd').value),
-                    userName: parseInt(document.getElementById('userName').value),
-                    userLevel: parseInt(document.getElementById('userLevel').value)
-                })
-            };
-            fetch('http://localhost:8080/mp13/api/users/' + id, requestOptions)
-                .then(response => response.json())
-                .then(response => {
-                    handlerStatus({ response: { status: response.status, message: response.status === 200 ? `User Id ${response.data.userId} successfully updated` : `User Id ${response.data.userId} failure updated` } })
-                    if (response.status === 200) {
-                        document.getElementById("cancelButton").click()
-                    }
-                })
-                .catch((error) => {
-                    // console.log(error)
-                });
+            UserServices.PUT(this.props.match.params.id, {
+                userEmail: document.getElementById('userEmail').value,
+                userNewPwd: sha256(document.getElementById('userNewPwd').value),
+                userOldPwd: sha256(document.getElementById('userOldPwd').value),
+                userName: document.getElementById('userName').value,
+                userLevel: parseInt(document.getElementById('userLevel').value)
+            }).then((response) => {
+                handlerStatus({ response: { status: response.data.status, message: response.data.status === 200 ? `User Id ${response.data.data.userName} successfully updated` : `User Id ${response.data.data.userName} failure updated` } })
+                if (response.data.status === 200) {
+                    document.getElementById("cancelButton").click()
+                }
+            })
         }
         const confirmUser = () => {
             if (this.state.mode === 'delete') {
-                fetch('http://localhost:8080/mp13/api/users/' + this.state.postData.data.userId, { method: 'DELETE' })
-                    .then(response => response.json())
-                    .then(response => {
-                        handlerStatus({ response: { status: response.status, message: response.status === 200 ? 'User successfully deleted' : 'User failure deleted' } })
-                        if (response.status === 200) {
+                UserServices.DELETE(this.props.match.params.id)
+                    .then((response) => {
+                        handlerStatus({ response: { status: response.data.status, message: response.data.status === 200 ? 'User successfully deleted' : 'User failure deleted' } })
+                        if (response.data.status === 200) {
                             document.getElementById("cancelButton").click()
                         }
                     })
-                    .catch((error) => {
-                        // console.log(error)
-                    });
             } else {
                 document.getElementById("cancelButton").click()
             }
@@ -155,12 +115,16 @@ export default class UserForm extends Component {
                                                     </div>
                                                 </>
                                                 :
-                                                <div className="row my-3">
-                                                    <div className="col">
-                                                        <label className="form-label">Password</label>
-                                                        <input type="password" className="form-control" id="userPwd" />
+                                                this.state.mode === 'add' ?
+
+                                                    <div className="row my-3">
+                                                        <div className="col">
+                                                            <label className="form-label">Password</label>
+                                                            <input type="password" className="form-control" id="userPwd" />
+                                                        </div>
                                                     </div>
-                                                </div>
+                                                    :
+                                                    ""
                                         }
                                         <div className="row my-3">
                                             <div className="col">

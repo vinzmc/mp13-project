@@ -1,16 +1,20 @@
 import React from "react";
 import Button from "elements/Button";
+import UserServices from "services/UserServices";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBoxOpen, faBoxesStacked, faUserLarge, faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 
 export default function Navigation() {
 
+    const currentUser = UserServices.getCurrentUser();
 
     const isActiveNavigation = (path) => {
         return document.location.pathname.split("/")[1] === path ? "active" : "";
     }
 
-    async function handleLogout(event) {
+    const handleLogout = () => {
+        UserServices.LOGOUT()
+        window.location.reload()
     }
 
     return (
@@ -32,8 +36,8 @@ export default function Navigation() {
                         </div>
                     </div>
                     <div className="row mt-3">
-                        <div className="col text-center">
-                            <h6>Hi, <b>Kurniawan</b></h6>
+                        <div className="col text-center text-capitalize">
+                            <h6>Hi, <b>{currentUser.data.userResponse.userName}</b></h6>
                         </div>
                     </div>
                     <div className="row my-5">

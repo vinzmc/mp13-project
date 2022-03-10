@@ -3,6 +3,7 @@ import Button from "elements/Button";
 import Navigation from "parts/Navigation";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Weather from "parts/Weather";
+import ProductServices from "services/ProductServices";
 import { faPlus, faAngleLeft, faAngleRight, faEye, faPenToSquare, faTrashCan } from '@fortawesome/free-solid-svg-icons';
 
 export default class Product extends Component {
@@ -19,28 +20,23 @@ export default class Product extends Component {
         document.title = "Products | HAIBCA13";
         window.scrollTo(0, 0);
 
-        fetch("http://localhost:8080/mp13/api/products")
-            .then((response) => response.json())
-            .then((responseJSON) => {
-                let data = []
-                let i = 0;
-                let j = 0;
-                responseJSON.data.forEach((item) => {
-                    if (j === 0) {
-                        data.push({ key: [] })
-                    } else if (j % 6 === 0) {
-                        data.push({ key: [] })
-                        i++
-                    }
-                    data[i].key.push(item)
-                    j++
-                })
-                this.setState({ products: data })
-                document.getElementById('pagination-data').setAttribute("max", data.length)
+        ProductServices.GET().then((response) => {
+            let data = []
+            let i = 0;
+            let j = 0;
+            response.data.data.forEach((item) => {
+                if (j === 0) {
+                    data.push({ key: [] })
+                } else if (j % 6 === 0) {
+                    data.push({ key: [] })
+                    i++
+                }
+                data[i].key.push(item)
+                j++
             })
-            .catch((error) => {
-                // console.log(error)
-            });
+            this.setState({ products: data })
+            document.getElementById('pagination-data').setAttribute("max", data.length)
+        })
     }
 
     render() {
