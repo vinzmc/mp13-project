@@ -6,12 +6,13 @@ import Category from "pages/Category";
 import User from "pages/User";
 import Login from "pages/Login";
 import CategoryForm from "pages/CategoryForm";
+import UserForm from "pages/UserForm";
 
 class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      crudStatus: null
+      crudStatus: null,
     }
     this.handlerStatus = this.handlerStatus.bind(this)
   }
@@ -29,9 +30,10 @@ class App extends Component {
           <Route exact path={"/"}>
             <Redirect to={"/products"} />
           </Route>
+          {/* Products Routing */}
           <Switch>
             <Route exact sensitive path={"/products"}>
-              <Product handlerStatus={this.handlerStatus} crudStatus={this.state} />
+              <Product handlerStatus={this.handlerStatus} crudStatus={this.state.crudStatus} />
             </Route>
             <Route sensitive path={"/products/add"}>
               <ProductForm handlerStatus={this.handlerStatus} />
@@ -46,9 +48,10 @@ class App extends Component {
               <ProductForm handlerStatus={this.handlerStatus} />
             </Route>
           </Switch>
+          {/* Categories Routing */}
           <Switch>
             <Route exact sensitive path={"/categories"}>
-              <Category handlerStatus={this.handlerStatus} crudStatus={this.state} />
+              <Category handlerStatus={this.handlerStatus} crudStatus={this.state.crudStatus} />
             </Route>
             <Route sensitive path={"/categories/add"}>
               <CategoryForm handlerStatus={this.handlerStatus} />
@@ -63,14 +66,31 @@ class App extends Component {
               <CategoryForm handlerStatus={this.handlerStatus} />
             </Route>
           </Switch>
-          <Route exact sensitive path={"/users"}>
-            <User />
-          </Route>
+          {/* Users Routing */}
+          <Switch>
+            <Route exact sensitive path={"/users"}>
+              <User handlerStatus={this.handlerStatus} crudStatus={this.state.crudStatus} />
+            </Route>
+            <Route sensitive path={"/users/add"}>
+              <UserForm handlerStatus={this.handlerStatus} />
+            </Route>
+            <Route sensitive path={"/users/view/:id"}>
+              <UserForm handlerStatus={this.handlerStatus} />
+            </Route>
+            <Route sensitive path={"/users/edit/:id"}>
+              <UserForm handlerStatus={this.handlerStatus} />
+            </Route>
+            <Route sensitive path={"/users/delete/:id"}>
+              <UserForm handlerStatus={this.handlerStatus} />
+            </Route>
+          </Switch>
+
           <Route exact sensitive path={"/login"}>
             <Login />
           </Route>
+
           <Route exact sensitive path={"/logout"}>
-            Logout
+            <Redirect to="/login" />
           </Route>
         </Router>
       </>

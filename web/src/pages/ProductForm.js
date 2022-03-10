@@ -13,7 +13,7 @@ export default class ProductForm extends Component {
     }
 
     componentDidMount() {
-        document.title = `${document.location.pathname.split("/")[2]} Products | HAIBCA13`;
+        document.title = `${document.location.pathname.split("/")[2]} Product | HAIBCA13`;
         window.scrollTo(0, 0);
         this.setState({ mode: document.location.pathname.split("/")[2] })
 
@@ -57,7 +57,7 @@ export default class ProductForm extends Component {
             fetch('http://localhost:8080/mp13/api/products/', requestOptions)
                 .then(response => response.json())
                 .then(response => {
-                    handlerStatus({ response: { status: response.status, message: response.status == 200 ? 'Product successfully added' : 'Product failure added' } })
+                    handlerStatus({ response: { status: response.status, message: response.status === 200 ? 'Product successfully added' : 'Product failure added' } })
                     if (response.status === 200) {
                         document.getElementById("cancelButton").click()
                     }
@@ -81,7 +81,7 @@ export default class ProductForm extends Component {
             fetch('http://localhost:8080/mp13/api/products/' + id, requestOptions)
                 .then(response => response.json())
                 .then(response => {
-                    handlerStatus({ response: { status: response.status, message: response.status == 200 ? `Product Id ${response.data.productId} successfully updated` : `Product Id ${response.data.productId} failure updated` } })
+                    handlerStatus({ response: { status: response.status, message: response.status === 200 ? `Product Id ${response.data.productId} successfully updated` : `Product Id ${response.data.productId} failure updated` } })
                     if (response.status === 200) {
                         document.getElementById("cancelButton").click()
                     }
@@ -91,11 +91,11 @@ export default class ProductForm extends Component {
                 });
         }
         const confirmProduct = () => {
-            if (this.state.mode == 'delete') {
+            if (this.state.mode === 'delete') {
                 fetch('http://localhost:8080/mp13/api/products/' + this.state.postData.data.productId, { method: 'DELETE' })
                     .then(response => response.json())
                     .then(response => {
-                        handlerStatus({ response: { status: response.status, message: response.status == 200 ? 'Product successfully deleted' : 'Product failure deleted' } })
+                        handlerStatus({ response: { status: response.status, message: response.status === 200 ? 'Product successfully deleted' : 'Product failure deleted' } })
                         if (response.status === 200) {
                             document.getElementById("cancelButton").click()
                         }
