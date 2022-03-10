@@ -24,17 +24,19 @@ export default class ProductForm extends Component {
                 // console.log(error)
             });
 
-        fetch("http://localhost:8080/mp13/api/products/" + document.location.pathname.split("/")[3])
-            .then((response) => response.json())
-            .then((responseJSON) => {
-                this.setState({ postData: responseJSON })
-                document.getElementById('productName').value = responseJSON.data.productName;
-                document.getElementById('productCategory').value = responseJSON.data.category.categoryId;
-                document.getElementById('productStock').value = responseJSON.data.productStock;
-            })
-            .catch((error) => {
-                // console.log(error)
-            });
+        if (document.location.pathname.split("/").length > 2) {
+            fetch("http://localhost:8080/mp13/api/products/" + document.location.pathname.split("/")[3])
+                .then((response) => response.json())
+                .then((responseJSON) => {
+                    this.setState({ postData: responseJSON })
+                    document.getElementById('productName').value = responseJSON.data.productName;
+                    document.getElementById('productCategory').value = responseJSON.data.category.categoryId;
+                    document.getElementById('productStock').value = responseJSON.data.productStock;
+                })
+                .catch((error) => {
+                    // console.log(error)
+                });
+        }
     }
 
     render() {
@@ -59,6 +61,9 @@ export default class ProductForm extends Component {
                     if (response.status === 200) {
                         document.getElementById("cancelButton").click()
                     }
+                })
+                .catch((error) => {
+                    // console.log(error)
                 });
         }
 
@@ -76,10 +81,13 @@ export default class ProductForm extends Component {
             fetch('http://localhost:8080/mp13/api/products/' + id, requestOptions)
                 .then(response => response.json())
                 .then(response => {
-                    handlerStatus({ response: { status: response.status, message: response.status == 200 ? `Product No ${response.data.productId} successfully updated` : `Product failure updated` } })
+                    handlerStatus({ response: { status: response.status, message: response.status == 200 ? `Product Id ${response.data.productId} successfully updated` : `Product Id ${response.data.productId} failure updated` } })
                     if (response.status === 200) {
                         document.getElementById("cancelButton").click()
                     }
+                })
+                .catch((error) => {
+                    // console.log(error)
                 });
         }
         const confirmProduct = () => {
@@ -91,6 +99,9 @@ export default class ProductForm extends Component {
                         if (response.status === 200) {
                             document.getElementById("cancelButton").click()
                         }
+                    })
+                    .catch((error) => {
+                        // console.log(error)
                     });
             } else {
                 document.getElementById("cancelButton").click()

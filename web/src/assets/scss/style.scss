@@ -39,11 +39,9 @@ $cyan: #00f5d4 !default;
 
 
 .btn-success {
-    background-color: $green;
     border: 0;
 
     &:hover {
-        background-color: #40B480;
         text-decoration: underline;
     }
 

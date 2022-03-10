@@ -17,26 +17,22 @@ export default class CategoryForm extends Component {
         window.scrollTo(0, 0);
         this.setState({ mode: document.location.pathname.split("/")[2] })
 
-        fetch("http://localhost:8080/mp13/api/categories")
-            .then((response) => response.json())
-            .then((responseJSON) => this.setState({ categories: responseJSON }))
-            .catch((error) => {
-                console.log(error)
-            });
-
-        fetch("http://localhost:8080/mp13/api/categories/" + document.location.pathname.split("/")[3])
-            .then((response) => response.json())
-            .then((responseJSON) => {
-                this.setState({ postData: responseJSON })
-                document.getElementById('categoryName').value = responseJSON.data.categoryName;
-                document.getElementById('categoryDetail').value = responseJSON.data.categoryDetail;
-            })
-            .catch((error) => {
-                console.log(error)
-            });
+        if (document.location.pathname.split("/").length > 2) {
+            fetch("http://localhost:8080/mp13/api/categories/" + document.location.pathname.split("/")[3])
+                .then((response) => response.json())
+                .then((responseJSON) => {
+                    this.setState({ postData: responseJSON })
+                    document.getElementById('categoryName').value = responseJSON.data.categoryName;
+                    document.getElementById('categoryDetail').value = responseJSON.data.categoryDetail;
+                })
+                .catch((error) => {
+                    // console.log(error)
+                });
+        }
     }
 
     render() {
+        const { handlerStatus } = this.props
 
         const addCategory = () => {
             const requestOptions = {
@@ -47,16 +43,16 @@ export default class CategoryForm extends Component {
                     categoryDetail: document.getElementById('categoryDetail').value,
                 }),
             }
-            console.log(requestOptions)
             fetch('http://localhost:8080/mp13/api/categories', requestOptions)
                 .then(response => response.json())
                 .then(response => {
+                    handlerStatus({ response: { status: response.status, message: response.status == 200 ? 'Category successfully added' : 'Category failure added' } })
                     if (response.status === 200) {
                         document.getElementById("cancelButton").click()
                     }
                 })
                 .catch((error) => {
-                    console.log(error)
+                    // console.log(error)
                 });
         }
 
@@ -73,12 +69,13 @@ export default class CategoryForm extends Component {
             fetch('http://localhost:8080/mp13/api/categories' + id, requestOptions)
                 .then(response => response.json())
                 .then(response => {
+                    handlerStatus({ response: { status: response.status, message: response.status == 200 ? `Category id ${response.data.categoryId} successfully updated` : `Category Id ${response.data.categoryId} failure updated` } })
                     if (response.status === 200) {
                         document.getElementById("cancelButton").click()
                     }
                 })
                 .catch((error) => {
-                    console.log(error)
+                    // console.log(error)
                 });
         }
         const confirmCategory = () => {
@@ -86,9 +83,13 @@ export default class CategoryForm extends Component {
                 fetch('http://localhost:8080/mp13/api/categories/' + this.state.postData.data.categoryId, { method: 'DELETE' })
                     .then(response => response.json())
                     .then(response => {
+                        handlerStatus({ response: { status: response.status, message: response.status == 200 ? 'Category successfully deleted' : 'Category failure deleted' } })
                         if (response.status === 200) {
                             document.getElementById("cancelButton").click()
                         }
+                    })
+                    .catch((error) => {
+                        // console.log(error)
                     });
             } else {
                 document.getElementById("cancelButton").click()

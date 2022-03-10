@@ -1,4 +1,4 @@
-import React, { Component, createRef, useEffect } from "react";
+import React, { Component, createRef, useEffect, useState } from "react";
 import Button from "elements/Button";
 import Navigation from "parts/Navigation";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -39,20 +39,23 @@ export default class Product extends Component {
                 document.getElementById('pagination-data').setAttribute("max", data.length)
             })
             .catch((error) => {
-                console.log(error)
+                // console.log(error)
             });
     }
 
     render() {
         const { products } = this.state;
-        const { crudStatus } = this.props.handlerStatus;
+        const { crudStatus } = this.props.crudStatus;
+
         const pagination = (e) => {
             if (e.target.value == e.target.getAttribute("max")) {
                 this.setState({ page: parseInt(e.target.getAttribute("max")) })
                 return;
             }
             this.setState({ page: parseInt(e.target.value) })
+            Array.from(document.querySelectorAll('input[type=checkbox]')).map((item) => item.checked = false)
         }
+
         const prevPagination = () => {
             let e = document.getElementById('pagination-data')
             this.setState({
@@ -60,7 +63,9 @@ export default class Product extends Component {
                     parseInt(e.getAttribute("min"))
                     : this.state.page - 1
             })
+            Array.from(document.querySelectorAll('input[type=checkbox]')).map((item) => item.checked = false)
         }
+
         const nextPagination = () => {
             let e = document.getElementById('pagination-data')
             this.setState({
@@ -68,7 +73,9 @@ export default class Product extends Component {
                     parseInt(e.getAttribute("max"))
                     : this.state.page + 1
             })
+            Array.from(document.querySelectorAll('input[type=checkbox]')).map((item) => item.checked = false)
         }
+
         return (
             <>
                 <Navigation />
@@ -103,11 +110,9 @@ export default class Product extends Component {
                                     <table className="table table-striped">
                                         <thead>
                                             <tr>
-                                                <th scope="col">
-                                                    <input type="checkbox" value="all" />
-                                                </th>
+                                                <th scope="col">No</th>
                                                 <th scope="col">Product Name</th>
-                                                <th scope="col">Product No</th>
+                                                <th scope="col">Product Id</th>
                                                 <th scope="col">Product Category</th>
                                                 <th scope="col">Stock</th>
                                                 <th scope="col">Action</th>
@@ -116,10 +121,8 @@ export default class Product extends Component {
                                         <tbody>
                                             {!products ? null : products[this.state.page - 1].key.map((item, index) => {
                                                 return (
-                                                    <tr key={index}>
-                                                        <td>
-                                                            <input type="checkbox" value={item.productId} />
-                                                        </td>
+                                                    <tr key={(this.state.page - 1) * 6 + index + 1}>
+                                                        <td>{(this.state.page - 1) * 6 + index + 1}</td>
                                                         <td>{item.productName}</td>
                                                         <td>{item.productId}</td>
                                                         <td>{item.category.categoryName}</td>

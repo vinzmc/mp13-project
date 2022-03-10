@@ -31,7 +31,7 @@ class App extends Component {
           </Route>
           <Switch>
             <Route exact sensitive path={"/products"}>
-              <Product handlerStatus={this.state} />
+              <Product handlerStatus={this.handlerStatus} crudStatus={this.state} />
             </Route>
             <Route sensitive path={"/products/add"}>
               <ProductForm handlerStatus={this.handlerStatus} />
@@ -48,19 +48,19 @@ class App extends Component {
           </Switch>
           <Switch>
             <Route exact sensitive path={"/categories"}>
-              <Category />
+              <Category handlerStatus={this.handlerStatus} crudStatus={this.state} />
             </Route>
             <Route sensitive path={"/categories/add"}>
-              <CategoryForm />
+              <CategoryForm handlerStatus={this.handlerStatus} />
             </Route>
             <Route sensitive path={"/categories/view/:id"}>
               <CategoryForm />
             </Route>
             <Route sensitive path={"/categories/edit/:id"}>
-              <CategoryForm />
+              <CategoryForm handlerStatus={this.handlerStatus} />
             </Route>
             <Route sensitive path={"/categories/delete/:id"}>
-              <CategoryForm />
+              <CategoryForm handlerStatus={this.handlerStatus} />
             </Route>
           </Switch>
           <Route exact sensitive path={"/users"}>

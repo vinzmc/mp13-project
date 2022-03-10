@@ -46,7 +46,7 @@ export default function Weather(props) {
                     </p>
                 </div>
                 :
-                <div className="col text-end text-danger cursor-pointer" onClick={getWeatherData}>
+                <div className="col-3 text-end text-danger" onClick={getWeatherData}>
                     Location Access is Limited
                 </div>
             }

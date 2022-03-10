@@ -10,7 +10,8 @@ export default class Category extends Component {
         super(props);
         this.state = {
             categories: null,
-            weather: null
+            weather: null,
+            page: 1
         }
     }
 
@@ -19,18 +20,73 @@ export default class Category extends Component {
         window.scrollTo(0, 0);
         fetch("http://localhost:8080/mp13/api/categories")
             .then((response) => response.json())
-            .then((responseJSON) => this.setState({ categories: responseJSON }))
+            .then((responseJSON) => {
+                let data = []
+                let i = 0;
+                responseJSON.data.map((item, index) => {
+                    if (index == 0) {
+                        data.push({ key: [] })
+                    } else if (index % 6 == 0) {
+                        data.push({ key: [] })
+                        i++
+                    }
+                    data[i].key.push(item)
+                })
+                this.setState({ categories: data })
+                document.getElementById('pagination-data').setAttribute("max", data.length)
+            })
             .catch((error) => {
-                console.log(error)
+                // console.log(error)
             });
     }
     render() {
         const { categories } = this.state;
+        const { crudStatus } = this.props.crudStatus;
+
+        const pagination = (e) => {
+            if (e.target.value == e.target.getAttribute("max")) {
+                this.setState({ page: parseInt(e.target.getAttribute("max")) })
+                return;
+            }
+            this.setState({ page: parseInt(e.target.value) })
+            Array.from(document.querySelectorAll('input[type=checkbox]')).map((item) => item.checked = false)
+        }
+
+        const prevPagination = () => {
+            let e = document.getElementById('pagination-data')
+            this.setState({
+                page: this.state.page - 1 <= e.getAttribute("min") ?
+                    parseInt(e.getAttribute("min"))
+                    : this.state.page - 1
+            })
+            Array.from(document.querySelectorAll('input[type=checkbox]')).map((item) => item.checked = false)
+        }
+
+        const nextPagination = () => {
+            let e = document.getElementById('pagination-data')
+            this.setState({
+                page: this.state.page + 1 >= e.getAttribute("max") ?
+                    parseInt(e.getAttribute("max"))
+                    : this.state.page + 1
+            })
+            Array.from(document.querySelectorAll('input[type=checkbox]')).map((item) => item.checked = false)
+        }
+
         return (
             <>
                 <Navigation />
                 <section id="content product">
                     <div className="container pt-4 px-4">
+                        {
+                            crudStatus ?
+                                <div className="row">
+                                    <div className={`col alert text-center text-capitalize fw-bolder alert-${crudStatus.response.status === 200 ? 'success' : 'danger'}`}>
+                                        {crudStatus.response.message}
+                                    </div>
+                                </div>
+                                :
+                                ""
+                        }
                         <div className="row">
                             <div className="col text-start">
                                 <h3 className="fw-bold">Category List</h3>
@@ -51,7 +107,7 @@ export default class Category extends Component {
                                         <thead>
                                             <tr>
                                                 <th scope="col">
-                                                    <input type="checkbox" value="all" />
+                                                    No
                                                 </th>
                                                 <th scope="col">Category Name</th>
                                                 <th scope="col">Category No</th>
@@ -60,12 +116,10 @@ export default class Category extends Component {
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {!categories ? null : categories.data.map((item, index) => {
+                                            {!categories ? null : categories[this.state.page - 1].key.map((item, index) => {
                                                 return (
-                                                    <tr key={index}>
-                                                        <td>
-                                                            <input type="checkbox" value={item.categoryId} />
-                                                        </td>
+                                                    <tr key={(this.state.page - 1) * 6 + index + 1}>
+                                                        <td>{(this.state.page - 1) * 6 + index + 1}</td>
                                                         <td>{item.categoryName}</td>
                                                         <td>{item.categoryId}</td>
                                                         <td>{item.categoryDetail}</td>
@@ -95,17 +149,17 @@ export default class Category extends Component {
                             <div className="col-3 ms-auto">
                                 <div className="row">
                                     <div className="col p-0 text-end">
-                                        <button className="btn btn-light rounded-circle">
+                                        <Button className="btn btn-light rounded-circle" onClick={prevPagination}>
                                             <FontAwesomeIcon icon={faAngleLeft} />
-                                        </button>
+                                        </Button>
                                     </div>
                                     <div className="col p-0 mx-2 text-center">
-                                        <input type="text" className="form-control text-center w-80" placeholder="1" />
+                                        <input type="number" id="pagination-data" min="1" className="form-control text-center w-80" value={this.state.page} onChange={pagination} />
                                     </div>
                                     <div className="col p-0">
-                                        <button className="btn btn-light rounded-circle">
+                                        <Button className="btn btn-light rounded-circle" onClick={nextPagination}>
                                             <FontAwesomeIcon icon={faAngleRight} />
-                                        </button>
+                                        </Button>
                                     </div>
                                 </div>
                             </div>
