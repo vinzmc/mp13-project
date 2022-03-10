@@ -10,7 +10,8 @@ export default class Product extends Component {
         super(props);
         this.state = {
             products: null,
-            weather: null
+            weather: null,
+            page: 1,
         }
     }
 
@@ -20,7 +21,23 @@ export default class Product extends Component {
 
         fetch("http://localhost:8080/mp13/api/products")
             .then((response) => response.json())
-            .then((responseJSON) => this.setState({ products: responseJSON }))
+            .then((responseJSON) => {
+                // this.setState({ products: responseJSON.data })
+                // pagination data spread
+                let data = []
+                let i = 0;
+                responseJSON.data.map((item, index) => {
+                    if (index == 0) {
+                        data.push({ key: [] })
+                    } else if (index % 6 == 0) {
+                        data.push({ key: [] })
+                        i++
+                    }
+                    data[i].key.push(item)
+                })
+                this.setState({ products: data })
+                document.getElementById('pagination-data').setAttribute("max", data.length)
+            })
             .catch((error) => {
                 console.log(error)
             });
@@ -29,6 +46,29 @@ export default class Product extends Component {
     render() {
         const { products } = this.state;
         const { crudStatus } = this.props.handlerStatus;
+        const pagination = (e) => {
+            if (e.target.value == e.target.getAttribute("max")) {
+                this.setState({ page: parseInt(e.target.getAttribute("max")) })
+                return;
+            }
+            this.setState({ page: parseInt(e.target.value) })
+        }
+        const prevPagination = () => {
+            let e = document.getElementById('pagination-data')
+            this.setState({
+                page: this.state.page - 1 <= e.getAttribute("min") ?
+                    parseInt(e.getAttribute("min"))
+                    : this.state.page - 1
+            })
+        }
+        const nextPagination = () => {
+            let e = document.getElementById('pagination-data')
+            this.setState({
+                page: this.state.page + 1 >= e.getAttribute("max") ?
+                    parseInt(e.getAttribute("max"))
+                    : this.state.page + 1
+            })
+        }
         return (
             <>
                 <Navigation />
@@ -74,7 +114,7 @@ export default class Product extends Component {
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {!products ? null : products.data.map((item, index) => {
+                                            {!products ? null : products[this.state.page - 1].key.map((item, index) => {
                                                 return (
                                                     <tr key={index}>
                                                         <td>
@@ -109,17 +149,17 @@ export default class Product extends Component {
                             <div className="col-3 ms-auto">
                                 <div className="row">
                                     <div className="col p-0 text-end">
-                                        <button className="btn btn-light rounded-circle">
+                                        <Button className="btn btn-light rounded-circle" onClick={prevPagination}>
                                             <FontAwesomeIcon icon={faAngleLeft} />
-                                        </button>
+                                        </Button>
                                     </div>
                                     <div className="col p-0 mx-2 text-center">
-                                        <input type="number" min={1} max={10} className="form-control text-center w-80" placeholder="1" />
+                                        <input type="number" id="pagination-data" min="1" className="form-control text-center" value={this.state.page} onChange={pagination} />
                                     </div>
                                     <div className="col p-0">
-                                        <button className="btn btn-light rounded-circle">
+                                        <Button className="btn btn-light rounded-circle" onClick={nextPagination}>
                                             <FontAwesomeIcon icon={faAngleRight} />
-                                        </button>
+                                        </Button>
                                     </div>
                                 </div>
                             </div>
