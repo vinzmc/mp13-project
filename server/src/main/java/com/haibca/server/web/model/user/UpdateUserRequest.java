@@ -23,7 +23,8 @@ public class UpdateUserRequest {
 
     @NotBlank
     @Length(min = 64, max = 64)
-    String userPwd;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    String userNewPwd;
 
     @NotBlank
     @Length(min = 64, max = 64)

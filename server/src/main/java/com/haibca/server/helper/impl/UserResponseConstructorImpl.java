@@ -4,6 +4,7 @@ package com.haibca.server.helper.impl;
 import com.haibca.server.entity.User;
 import com.haibca.server.helper.UserResponseConstructor;
 import com.haibca.server.web.model.user.UserResponse;
+import com.haibca.server.web.model.user.UserTokenResponse;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 
@@ -30,7 +31,19 @@ public class UserResponseConstructorImpl implements UserResponseConstructor {
             responses.add(userResponse);
         }
 
-        BeanUtils.copyProperties(users, responses);
         return responses;
     }
+
+    @Override
+    public UserTokenResponse toResponse(Boolean result, String token, User user) {
+        UserResponse userResponse = toResponse(user);
+        return UserTokenResponse
+                .builder()
+                .userResponse(userResponse)
+                .authToken(token)
+                .authResult(result)
+                .build();
+    }
+
+
 }

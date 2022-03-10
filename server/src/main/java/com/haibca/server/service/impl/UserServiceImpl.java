@@ -25,9 +25,15 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(rollbackFor = {Exception.class})
     public User create(CreateUserRequest request) {
-        User user = User.builder().build();
         //salt length = 32
-        user.setUserSalt(hashHandlerConstructor.generateRandomString(32));
+        String salt = hashHandlerConstructor.generateRandomString(32);
+        String encoded = hashHandlerConstructor.toSHA256(request.getUserPwd().concat(salt));
+
+        request.setUserPwd(encoded);
+        User user = User
+                .builder()
+                .userSalt(salt)
+                .build();
         BeanUtils.copyProperties(request, user);
 
         return userRepository.save(user);
@@ -51,8 +57,10 @@ public class UserServiceImpl implements UserService {
         String encoded = request.getUserOldPwd().concat(user.getUserSalt());
         encoded = hashHandlerConstructor.toSHA256(encoded);
         if (encoded.equals(user.getUserPwd())) {
-            request.setUserPwd(encoded);
+            String newPwdEncoded = hashHandlerConstructor.toSHA256(request.getUserNewPwd().concat(user.getUserSalt()));
+
             BeanUtils.copyProperties(request, user);
+            user.setUserPwd(newPwdEncoded);
 
             return userRepository.save(user);
         }
@@ -63,5 +71,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteById(Integer id) {
         userRepository.deleteById(id);
+    }
+
+    @Override
+    public User findByEmail(String email) {
+         return userRepository.getUserByEmail(email);
     }
 }

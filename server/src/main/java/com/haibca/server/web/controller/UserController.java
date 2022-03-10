@@ -1,15 +1,15 @@
 package com.haibca.server.web.controller;
 
 import com.haibca.server.entity.User;
+import com.haibca.server.helper.HashHandlerConstructor;
 import com.haibca.server.helper.UserResponseConstructor;
 import com.haibca.server.service.UserService;
-import com.haibca.server.validation.PasswordValid;
+import com.haibca.server.validation.UserAuthValid;
 import com.haibca.server.validation.UserExists;
 import com.haibca.server.web.model.Response;
 import com.haibca.server.web.model.user.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -30,6 +30,9 @@ public class UserController {
 
     @Autowired
     UserResponseConstructor userResponseConstructor;
+
+    @Autowired
+    HashHandlerConstructor hashHandlerConstructor;
 
     @Operation(summary = "Create new User")
     @PostMapping(
@@ -76,7 +79,6 @@ public class UserController {
     public Response<UserResponse> update(@UserExists @PathVariable Integer id,
                                             @Valid @RequestBody UpdateUserRequest request) {
         User user = userService.update(id, request);
-
         return Response.<UserResponse>builder()
                 .status(HttpStatus.OK.value())
                 .data(userResponseConstructor.toResponse(user))
@@ -95,15 +97,16 @@ public class UserController {
                 .build();
     }
 
-//    @Operation(summary = "Sign in user by email")
-//    @DeleteMapping(
-//            path = "/api/users/signin",
-//            produces = MediaType.APPLICATION_JSON_VALUE)
-//    public Response<UserTokenResponse> authByEmail(@RequestBody @Valid UserAuthRequest request) {
-//        userService.signIn(request);
-//        return Response.<UserTokenResponse>builder()
-//                .status(HttpStatus.OK.value())
-//                .data(true)
-//                .build();
-//    }
+    @Operation(summary = "Sign in user by email")
+    @PostMapping(
+            path = "/api/users/signin",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public Response<UserTokenResponse> authByEmail(@UserAuthValid @RequestBody @Valid UserAuthRequest request) {
+        User user = userService.findByEmail(request.getUserEmail());
+        String token = hashHandlerConstructor.generateRandomString(64);
+        return Response.<UserTokenResponse>builder()
+                .status(HttpStatus.OK.value())
+                .data(userResponseConstructor.toResponse(true, token, user))
+                .build();
+    }
 }

@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserTokenResponse {
-    Boolean status;
+    Boolean authResult;
     String authToken;
     UserResponse userResponse;
 }
