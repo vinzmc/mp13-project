@@ -4,6 +4,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBoxOpen, faBoxesStacked, faUserLarge, faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 
 export default function Navigation() {
+
+    const isActiveNavigation = (path) => {
+        return document.location.pathname.split("/")[1] === path ? "active" : "";
+    }
     return (
         <>
             <nav id="side-nav">
@@ -30,7 +34,7 @@ export default function Navigation() {
                     <div className="row my-5">
                         <div className="col">
                             <div className="list-group">
-                                <Button type="link" href="/products" className={`list-group-item border-0 btn btn-light my-2 ${document.location.pathname === '/products' ? 'active' : ''}`}>
+                                <Button type="link" href="/products" className={`list-group-item border-0 btn btn-light my-2 ${isActiveNavigation('products')}`}>
                                     <div className="row">
                                         <div className="col-8 mx-auto">
                                             <div className="row">
@@ -42,7 +46,7 @@ export default function Navigation() {
                                         </div>
                                     </div>
                                 </Button>
-                                <Button type="link" href="/categories" className={`list-group-item border-0 btn btn-light my-2 ${document.location.pathname === '/categories' ? 'active' : ''}`}>
+                                <Button type="link" href="/categories" className={`list-group-item border-0 btn btn-light my-2 ${isActiveNavigation('categories')}`}>
                                     <div className="row">
                                         <div className="col-8 mx-auto">
                                             <div className="row">
@@ -54,7 +58,7 @@ export default function Navigation() {
                                         </div>
                                     </div>
                                 </Button>
-                                <Button type="link" href="/users" className={`list-group-item border-0 btn btn-light my-2 ${document.location.pathname === '/users' ? 'active' : ''}`}>
+                                <Button type="link" href="/users" className={`list-group-item border-0 btn btn-light my-2 ${isActiveNavigation('users')}`}>
                                     <div className="row">
                                         <div className="col-8 mx-auto">
                                             <div className="row">

@@ -7,55 +7,28 @@
 
 // Font
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap");
-// Color Variable
-@import "color-variables";
-// scss-docs-start import-stack
-// Configuration
-@import "functions";
-@import "variables";
-@import "mixins";
-@import "utilities";
+$white: #fff !default;
+$gray-100: #f8f9fa !default;
+$gray-200: #e9ecef !default;
+$gray-300: #dee2e6 !default;
+$gray-400: #ced4da !default;
+$gray-500: #9a9a9a !default;
+$gray-600: #6a6a6a !default;
+$gray-700: #6c757d !default;
+$gray-800: #495057 !default;
+$gray-900: #343a40 !default;
+$black: #27272A !default;
 
-// Layout & components
-@import "root";
-@import "reboot";
-@import "type";
-@import "images";
-@import "containers";
-@import "grid";
-@import "tables";
-@import "forms";
-@import "buttons";
-@import "transitions";
-@import "dropdown";
-@import "button-group";
-@import "nav";
-@import "navbar";
-@import "card";
-@import "accordion";
-@import "breadcrumb";
-@import "pagination";
-@import "badge";
-@import "alert";
-@import "progress";
-@import "list-group";
-@import "close";
-@import "toasts";
-@import "modal";
-@import "tooltip";
-@import "popover";
-@import "carousel";
-@import "spinners";
-@import "offcanvas";
-@import "placeholders";
-
-// Helpers
-@import "helpers";
-
-// Utilities
-@import "utilities/api";
-// scss-docs-end import-stack
-
+$blue: #00B2FF !default;
+$indigo: #3252df !default;
+$purple: #985de5 !default;
+$pink: #f15bb5 !default;
+$red: #e74c3c !default;
+$orange: #fd7e14 !default;
+$yellow: #fee440 !default;
+$green: #4AD295 !default;
+$teal: #1abc9c !default;
+$cyan: #00f5d4 !default;
 
 * {
     margin: 0;
@@ -66,11 +39,9 @@
 
 
 .btn-success {
-    background-color: $green;
     border: 0;
 
     &:hover {
-        background-color: #40B480;
         text-decoration: underline;
     }
 
@@ -92,47 +63,50 @@
     }
 }
 
-section#login .form-group .form-control {
-    border-radius: 0;
-}
+section#login .form-group {
+    .form-control {
+        border-radius: 0;
+    }
 
-section#login .form-group input.form-control::placeholder {
-    color: #A7A7A7;
-}
+    input.form-control {
+        &::placeholder {
+            color: #A7A7A7;
+        }
 
-section#login .form-group input.form-control:focus {
-    border-color: $blue;
-    outline: none;
-    box-shadow: none;
-}
+        &:focus {
+            border-color: $blue;
+            outline: none;
+            box-shadow: none;
+        }
 
-section#login .form-group .form-control:first-child {
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
-}
+        &:first-child {
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+        }
 
-section#login .form-group .form-control:last-child {
-    border-bottom-left-radius: 8px;
-    border-bottom-right-radius: 8px;
-    border-top: 0;
-}
+        &:last-child {
+            border-bottom-left-radius: 8px;
+            border-bottom-right-radius: 8px;
+            border-top: 0;
+        }
+    }
 
-section#login .form-group .btn-primary {
-    background-color: $blue;
-    border-color: $blue;
-}
+    .btn-primary {
+        background-color: $blue;
+        border-color: $blue;
 
-section#login .form-group .btn-primary:hover,
-section#login .form-group .btn-primary:active,
-section#login .form-group .btn-primary:focus {
-    background-color: #009ee2;
-    border-color: #009ee2;
+        &:hover,
+        &:active,
+        &:focus {
+            background-color: #009ee2;
+            border-color: #009ee2;
+        }
+    }
 }
-
 
 nav#side-nav {
     width: 16.66666667%;
-    position: absolute;
+    position: fixed;
     top: 0;
     bottom: 0;
     background: #ffffff;
@@ -140,26 +114,23 @@ nav#side-nav {
     border-radius: 0;
 
     .list-group-item {
-        color: #8E8E8E;
         border-radius: 8px;
 
         &:hover {
             text-decoration: underline;
             background-color: #F0F0F0;
         }
+
+        &:active {
+            color: $white !important;
+            background-color: $blue;
+
+            &:hover {
+                background-color: $blue;
+            }
+        }
     }
-}
 
-nav#side-nav .list-group-item.active {
-    color: #ffffff;
-    background-color: $blue;
-
-    &:hover {
-        background-color: $blue;
-    }
-}
-
-nav#side-nav {
     .logo {
         &.btn {
             border-color: #E5E5E5;
@@ -206,44 +177,54 @@ section {
 
 .table-action .btn {
     border: 0;
+
+    &:hover {
+        color: $white;
+    }
 }
 
-div.modal .modal-content {
+div.card {
     border-radius: 8px;
     border: 2px solid $blue;
-}
 
-div.modal .modal-content label.form-label {
-    margin: 0;
-    font-weight: 600;
-}
+    .card-body {
+        label.form-label {
 
-div.modal .modal-content .btn-primary {
-    background-color: $blue;
-    border: 0;
-}
+            margin: 0;
+            font-weight: 600;
+        }
 
-div.modal .modal-content .btn-primary:focus,
-div.modal .modal-content .btn-primary:active,
-div.modal .modal-content .btn-primary:hover {
-    background-color: #009ee2;
-    border-color: #009ee2;
-}
+        .btn-primary {
+            background-color: $blue;
+            border: 0;
 
-div.modal .modal-content .btn-secondary {
-    background-color: #F0F0F0;
-    color: #8E8E8E;
-    border: 0;
-}
+            &:focus,
+            &:active,
+            &:hover {
+                background-color: #009ee2;
+                border-color: #009ee2;
+            }
+        }
 
-div.modal .modal-content .btn-secondary:focus,
-div.modal .modal-content .btn-secondary:active,
-div.modal .modal-content .btn-secondary:hover {
-    background-color: #8E8E8E;
-    color: #F0F0F0;
+        .btn-secondary {
+
+            background-color: #F0F0F0;
+            color: #8E8E8E;
+            border: 0;
+
+            &:focus,
+            &:active,
+            &:hover {
+                background-color: #8E8E8E;
+                color: #F0F0F0;
+            }
+        }
+    }
 }
 
 div#pagination {
+    margin-bottom: 1rem;
+
     input.form-control {
         width: 80%;
         margin: 0 auto;
@@ -268,4 +249,8 @@ table.table tr td:first-child,
 table.table tr th:first-child {
     padding-left: 0.75rem;
     text-align: center;
+}
+
+.cursor-pointer {
+    cursor: pointer;
 }

@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import Navigation from "parts/Navigation";
-import Table from "parts/Table";
+import Weather from "parts/Weather";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCloud, faPlus, faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
 
 export default class User extends Component {
     componentDidMount() {
@@ -19,11 +19,7 @@ export default class User extends Component {
                             <div className="col text-start">
                                 <h3 className="fw-bold">User List</h3>
                             </div>
-                            <div id="weather" className="col text-end">
-                                <p>
-                                    <span className="text-primary me-2"><FontAwesomeIcon icon={faCloud} /></span>
-                                    Central Klaten, <span className="temperature">26&#176;C</span> Mostly Cloudly</p>
-                            </div>
+                            <Weather />
                         </div>
                         <div className="row">
                             <div className="col text-end">
@@ -35,7 +31,6 @@ export default class User extends Component {
                         </div>
                         <div className="row mt-4">
                             <div className="col">
-                                <Table data={["aku", "kamu"]} />
                             </div>
                         </div>
                         <div id="pagination" className="row">
