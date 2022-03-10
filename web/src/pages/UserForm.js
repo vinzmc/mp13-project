@@ -60,11 +60,19 @@ export default class UserForm extends Component {
             })
         }
         const confirmUser = () => {
+            const deleteRequest = {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    sessionId: UserServices.getCurrentUser().data.sessionsId
+                })
+            };
+
             if (this.state.mode === 'delete') {
-                UserServices.DELETE(this.props.match.params.id)
+                UserServices.DELETE(this.props.match.params.id, deleteRequest)
                     .then((response) => {
-                        handlerStatus({ response: { status: response.data.status, message: response.data.status === 200 ? 'User successfully deleted' : 'User failure deleted' } })
-                        if (response.data.status === 200) {
+                        handlerStatus({ response: { status: response.status, message: response.status === 200 ? 'User successfully deleted' : 'User failure deleted' } })
+                        if (response.status === 200) {
                             document.getElementById("cancelButton").click()
                         }
                     })

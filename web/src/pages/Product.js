@@ -20,25 +20,34 @@ export default class Product extends Component {
     componentDidMount() {
         document.title = "Products | HAIBCA13";
         window.scrollTo(0, 0);
-
-        ProductServices.GET(UserServices.getCurrentUser().data.sessionsId).then((response) => {
-            let data = []
-            let i = 0;
-            let j = 0;
-            console.log(response)
-            response.data.data.forEach((item) => {
-                if (j === 0) {
-                    data.push({ key: [] })
-                } else if (j % 6 === 0) {
-                    data.push({ key: [] })
-                    i++
-                }
-                data[i].key.push(item)
-                j++
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                sessionId: UserServices.getCurrentUser().data.sessionsId
             })
-            this.setState({ products: data })
-            document.getElementById('pagination-data').setAttribute("max", data.length)
-        })
+        };
+
+        ProductServices.GET(requestOptions, undefined)
+            .then(response => response.json())
+            .then((responseData) => {
+                let data = []
+                let i = 0;
+                let j = 0;
+                
+                responseData.data.forEach((item) => {
+                    if (j === 0) {
+                        data.push({ key: [] })
+                    } else if (j % 6 === 0) {
+                        data.push({ key: [] })
+                        i++
+                    }
+                    data[i].key.push(item)
+                    j++
+                })
+                this.setState({ products: data })
+                document.getElementById('pagination-data').setAttribute("max", data.length)
+            })
     }
 
     render() {

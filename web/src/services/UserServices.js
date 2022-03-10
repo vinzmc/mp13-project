@@ -5,6 +5,7 @@ const GET = (id) => {
     return axios.get(id === undefined ? API_URL : API_URL + id)
 }
 
+
 const POST = (data) => {
     return axios.post(API_URL, data)
 }
@@ -13,8 +14,8 @@ const PUT = (id, data) => {
     return axios.put(API_URL + id, data)
 }
 
-const DELETE = (id) => {
-    return axios.delete(API_URL + id)
+const DELETE = (id, data) => {
+    return fetch(API_URL.concat(id) , data);
 }
 
 const SIGNIN = async (data) => {

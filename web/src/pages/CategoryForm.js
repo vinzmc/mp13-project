@@ -52,11 +52,19 @@ export default class CategoryForm extends Component {
             })
         }
         const confirmCategory = () => {
+            const deleteRequest = {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    sessionId: UserServices.getCurrentUser().data.sessionsId
+                })
+            };
+
             if (this.state.mode === 'delete') {
-                CategoryServices.DELETE(this.props.match.params.id, UserServices.getCurrentUser().data.sessionsId)
+                CategoryServices.DELETE(this.props.match.params.id, deleteRequest)
                     .then((response) => {
-                        console.log(Response)
-                        handlerStatus({ response: { status: response.data.status, message: response.data.status === 200 ? 'Category successfully deleted' : 'Category failure deleted' } })
+                        console.log(response)
+                        handlerStatus({ response: { status: response.status, message: response.status === 200 ? 'Category successfully deleted' : 'Category failure deleted' } })
                         this.props.history.push('/categories')
                     })
             } else {

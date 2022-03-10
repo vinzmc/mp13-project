@@ -18,11 +18,22 @@ export default class ProductForm extends Component {
     componentDidMount() {
         document.title = `${this.props.location.pathname.split("/")[2]} Product | HAIBCA13`;
         window.scrollTo(0, 0);
-        this.setState({ mode: this.props.location.pathname.split("/")[2] })
-        CategoryServices.GET(UserServices.getCurrentUser().data.sessionsId).then((response) => this.setState({ categories: response.data }))
+        this.setState({ mode: this.props.location.pathname.split("/")[2] });
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                sessionId: UserServices.getCurrentUser().data.sessionsId
+            })
+        };
+
+        CategoryServices.GET(UserServices.getCurrentUser().data.sessionsId).then((response) => this.setState({ categories: response.data }));
         if (this.props.match.params.id !== undefined) {
-            ProductServices.GET(UserServices.getCurrentUser().data.sessionsId, this.props.match.params.id).then((response) => {
-                const json = response.data
+            ProductServices.GET(requestOptions, this.props.match.params.id)
+            .then(response => response.json())
+            .then((responseData) => {
+                
+                const json = responseData
                 this.setState({ postData: json })
                 document.getElementById('productName').value = json.data.productName;
                 document.getElementById('productCategory').value = json.data.category.categoryId;
@@ -34,6 +45,13 @@ export default class ProductForm extends Component {
     render() {
         const { categories } = this.state
         const { handlerStatus } = this.props
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                sessionId: UserServices.getCurrentUser().data.sessionsId
+            })
+        };
 
         const addProduct = () => {
             ProductServices.POST({
@@ -59,8 +77,16 @@ export default class ProductForm extends Component {
             })
         }
         const confirmProduct = () => {
+            const deleteRequest = {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    sessionId: UserServices.getCurrentUser().data.sessionsId
+                })
+            };
+
             if (this.state.mode === 'delete') {
-                ProductServices.DELETE(this.props.match.params.id, UserServices.getCurrentUser().data.sessionsId)
+                ProductServices.DELETE(this.props.match.params.id, deleteRequest)
                     .then((response) => {
                         console.log(response)
                         handlerStatus({ response: { status: response.status, message: response.status === 200 ? 'Product successfully deleted' : 'Product failure deleted' } })

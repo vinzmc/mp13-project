@@ -4,8 +4,8 @@ import com.haibca.server.entity.Sessions;
 import com.haibca.server.helper.HashHandlerConstructor;
 import com.haibca.server.repository.SessionsRepository;
 import com.haibca.server.service.SessionService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.stereotype.Service;
 
 @Service

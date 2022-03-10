@@ -7,8 +7,8 @@ const GET = (data, id) => {
     })
 }
 
-const POST = (data) => {
-    return axios.post(API_URL, data)
+const POST = (data) =>{
+	return axios.post(API_URL, data);
 }
 
 const PUT = (id, data) => {
@@ -16,9 +16,7 @@ const PUT = (id, data) => {
 }
 
 const DELETE = (id, data) => {
-    return axios.delete(API_URL + id, {
-        sessionId: data
-    })
+    return fetch(API_URL.concat(id) , data);
 }
 
 export default {
