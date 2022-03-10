@@ -36,7 +36,7 @@ public class UserResponseConstructorImpl implements UserResponseConstructor {
     }
 
     @Override
-    public UserTokenResponse toResponse(Boolean result, Sessions sessionsId, User user) {
+    public UserTokenResponse toResponse(Boolean result, String sessionsId, User user) {
         UserResponse userResponse = toResponse(user);
         return UserTokenResponse
                 .builder()

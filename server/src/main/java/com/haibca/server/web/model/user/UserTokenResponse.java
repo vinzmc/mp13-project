@@ -12,6 +12,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class UserTokenResponse {
     Boolean authResult;
-    Sessions sessionsId;
+    String sessionsId;
     UserResponse userResponse;
 }

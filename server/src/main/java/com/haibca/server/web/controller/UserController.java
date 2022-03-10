@@ -117,7 +117,7 @@ public class UserController {
 
         return Response.<UserTokenResponse>builder()
                 .status(HttpStatus.OK.value())
-                .data(userResponseConstructor.toResponse(true, sessions, user))
+                .data(userResponseConstructor.toResponse(true, sessions.getSessionid(), user))
                 .build();
     }
 

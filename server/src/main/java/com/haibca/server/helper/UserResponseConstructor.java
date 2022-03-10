@@ -10,5 +10,5 @@ import java.util.List;
 public interface UserResponseConstructor {
     UserResponse toResponse(User User);
     List<UserResponse> toResponse(List<User> users);
-    UserTokenResponse toResponse(Boolean result, Sessions sessionsId, User user);
+    UserTokenResponse toResponse(Boolean result, String sessionsId, User user);
 }
