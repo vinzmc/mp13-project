@@ -1,5 +1,8 @@
 package com.haibca.server.web.model.category;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.haibca.server.entity.Sessions;
+import com.haibca.server.validation.SessionExists;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,4 +24,8 @@ public class UpdateCategoryRequest {
     @NotBlank
     @Length(max = 255)
     String categoryDetail;
+
+    @SessionExists
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    String sessionId;
 }
