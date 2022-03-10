@@ -13,6 +13,10 @@ public class SessionExistsByIdValidator implements ConstraintValidator<SessionEx
 
     @Override
     public boolean isValid(String id, ConstraintValidatorContext constraintValidatorContext) {
+        //Constraint agar tidak di query kalau token tidak benar
+        if(id.length()!=64){
+            return false;
+        }
         return sessionsRepository.existsById(id);
     }
 }

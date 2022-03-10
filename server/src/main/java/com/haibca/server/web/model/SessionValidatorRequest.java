@@ -14,8 +14,10 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SessionValidatorRequest {
-    //it's fake request on controller, but validated by validator. Use for session token validation only.
-    //useful for validating token with json body
+    //can be used as fake request on controller, but validated by validator.
+    //Use for session token validation only.
+    //useful for validating token with json body.
+    
     @NotBlank
     @SessionExists
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
