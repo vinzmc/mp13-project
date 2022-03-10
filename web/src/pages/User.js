@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Button from "elements/Button";
 import Navigation from "parts/Navigation";
 import Weather from "parts/Weather";
+import UserServices from "services/UserServices";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faAngleLeft, faAngleRight, faEye, faPenToSquare, faTrashCan } from '@fortawesome/free-solid-svg-icons';
 
@@ -18,28 +19,23 @@ export default class User extends Component {
         document.title = "User | HAIBCA13";
         window.scrollTo(0, 0);
 
-        fetch("http://localhost:8080/mp13/api/users")
-            .then((response) => response.json())
-            .then((responseJSON) => {
-                let data = []
-                let i = 0;
-                let j = 0;
-                responseJSON.data.forEach((item) => {
-                    if (j === 0) {
-                        data.push({ key: [] })
-                    } else if (j % 6 === 0) {
-                        data.push({ key: [] })
-                        i++
-                    }
-                    data[i].key.push(item)
-                    j++
-                })
-                this.setState({ users: data })
-                document.getElementById('pagination-data').setAttribute("max", data.length)
+        UserServices.GET().then((response) => {
+            let data = []
+            let i = 0;
+            let j = 0;
+            response.data.data.forEach((item) => {
+                if (j === 0) {
+                    data.push({ key: [] })
+                } else if (j % 6 === 0) {
+                    data.push({ key: [] })
+                    i++
+                }
+                data[i].key.push(item)
+                j++
             })
-            .catch((error) => {
-                // console.log(error)
-            });
+            this.setState({ users: data })
+            document.getElementById('pagination-data').setAttribute("max", data.length)
+        })
     }
     render() {
         const { users } = this.state;

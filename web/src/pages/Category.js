@@ -2,8 +2,10 @@ import React, { Component } from "react";
 import Navigation from "parts/Navigation";
 import Button from "elements/Button";
 import Weather from "parts/Weather";
+import CategoryServices from "services/CategoryServices";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faAngleLeft, faAngleRight, faEye, faPenToSquare, faTrashCan } from '@fortawesome/free-solid-svg-icons';
+import UserServices from "services/UserServices";
 
 export default class Category extends Component {
     constructor(props) {
@@ -18,28 +20,23 @@ export default class Category extends Component {
     componentDidMount() {
         document.title = "Category | HAIBCA13";
         window.scrollTo(0, 0);
-        fetch("http://localhost:8080/mp13/api/categories")
-            .then((response) => response.json())
-            .then((responseJSON) => {
-                let data = []
-                let i = 0;
-                let j = 0;
-                responseJSON.data.forEach((item) => {
-                    if (j === 0) {
-                        data.push({ key: [] })
-                    } else if (j % 6 === 0) {
-                        data.push({ key: [] })
-                        i++
-                    }
-                    data[i].key.push(item)
-                    j++
-                })
-                this.setState({ categories: data })
-                document.getElementById('pagination-data').setAttribute("max", data.length)
+        CategoryServices.GET(UserServices.getCurrentUser().data.sessionsId).then((response) => {
+            let data = []
+            let i = 0;
+            let j = 0;
+            response.data.data.forEach((item) => {
+                if (j === 0) {
+                    data.push({ key: [] })
+                } else if (j % 6 === 0) {
+                    data.push({ key: [] })
+                    i++
+                }
+                data[i].key.push(item)
+                j++
             })
-            .catch((error) => {
-                // console.log(error)
-            });
+            this.setState({ categories: data })
+            document.getElementById('pagination-data').setAttribute("max", data.length)
+        })
     }
     render() {
         const { categories } = this.state;

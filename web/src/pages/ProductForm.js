@@ -1,6 +1,9 @@
 import React, { Component } from "react";
 import Button from "elements/Button";
 import Navigation from "parts/Navigation";
+import ProductServices from "services/ProductServices";
+import CategoryServices from "services/CategoryServices";
+import UserServices from "services/UserServices";
 
 export default class ProductForm extends Component {
     constructor(props) {
@@ -13,29 +16,18 @@ export default class ProductForm extends Component {
     }
 
     componentDidMount() {
-        document.title = `${document.location.pathname.split("/")[2]} Product | HAIBCA13`;
+        document.title = `${this.props.location.pathname.split("/")[2]} Product | HAIBCA13`;
         window.scrollTo(0, 0);
-        this.setState({ mode: document.location.pathname.split("/")[2] })
-
-        fetch("http://localhost:8080/mp13/api/categories")
-            .then((response) => response.json())
-            .then((responseJSON) => this.setState({ categories: responseJSON }))
-            .catch((error) => {
-                // console.log(error)
-            });
-
-        if (document.location.pathname.split("/").length > 2) {
-            fetch("http://localhost:8080/mp13/api/products/" + document.location.pathname.split("/")[3])
-                .then((response) => response.json())
-                .then((responseJSON) => {
-                    this.setState({ postData: responseJSON })
-                    document.getElementById('productName').value = responseJSON.data.productName;
-                    document.getElementById('productCategory').value = responseJSON.data.category.categoryId;
-                    document.getElementById('productStock').value = responseJSON.data.productStock;
-                })
-                .catch((error) => {
-                    // console.log(error)
-                });
+        this.setState({ mode: this.props.location.pathname.split("/")[2] })
+        CategoryServices.GET(UserServices.getCurrentUser().data.sessionsId).then((response) => this.setState({ categories: response.data }))
+        if (this.props.match.params.id !== undefined) {
+            ProductServices.GET(UserServices.getCurrentUser().data.sessionsId, this.props.match.params.id).then((response) => {
+                const json = response.data
+                this.setState({ postData: json })
+                document.getElementById('productName').value = json.data.productName;
+                document.getElementById('productCategory').value = json.data.category.categoryId;
+                document.getElementById('productStock').value = json.data.productStock;
+            })
         }
     }
 
@@ -44,67 +36,38 @@ export default class ProductForm extends Component {
         const { handlerStatus } = this.props
 
         const addProduct = () => {
-            const requestOptions = {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    productName: document.getElementById('productName').value,
-                    categoryId: parseInt(document.getElementById('productCategory').value),
-                    productStock: parseInt(document.getElementById('productStock').value)
-                })
-            };
-
-            fetch('http://localhost:8080/mp13/api/products/', requestOptions)
-                .then(response => response.json())
-                .then(response => {
-                    handlerStatus({ response: { status: response.status, message: response.status === 200 ? 'Product successfully added' : 'Product failure added' } })
-                    if (response.status === 200) {
-                        document.getElementById("cancelButton").click()
-                    }
-                })
-                .catch((error) => {
-                    // console.log(error)
-                });
+            ProductServices.POST({
+                productName: document.getElementById('productName').value,
+                categoryId: parseInt(document.getElementById('productCategory').value),
+                productStock: parseInt(document.getElementById('productStock').value),
+                sessionId: UserServices.getCurrentUser().data.sessionsId
+            }).then((response) => {
+                handlerStatus({ response: { status: response.data.status, message: response.data.status === 200 ? 'Product successfully added' : 'Product failure added' } })
+                this.props.history.push('/products')
+            })
         }
 
         const editProduct = () => {
-            let id = this.state.postData.data.productId
-            const requestOptions = {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    productName: document.getElementById('productName').value,
-                    categoryId: parseInt(document.getElementById('productCategory').value),
-                    productStock: parseInt(document.getElementById('productStock').value)
-                })
-            };
-            fetch('http://localhost:8080/mp13/api/products/' + id, requestOptions)
-                .then(response => response.json())
-                .then(response => {
-                    handlerStatus({ response: { status: response.status, message: response.status === 200 ? `Product Id ${response.data.productId} successfully updated` : `Product Id ${response.data.productId} failure updated` } })
-                    if (response.status === 200) {
-                        document.getElementById("cancelButton").click()
-                    }
-                })
-                .catch((error) => {
-                    // console.log(error)
-                });
+            ProductServices.PUT(this.props.match.params.id, {
+                productName: document.getElementById('productName').value,
+                categoryId: parseInt(document.getElementById('productCategory').value),
+                productStock: parseInt(document.getElementById('productStock').value),
+                sessionId: UserServices.getCurrentUser().data.sessionsId
+            }).then((response) => {
+                handlerStatus({ response: { status: response.data.status, message: response.data.status === 200 ? `Product Id ${response.data.data.productId} successfully updated` : `Product Id ${response.data.data.productId} failure updated` } })
+                this.props.history.push('/products')
+            })
         }
         const confirmProduct = () => {
             if (this.state.mode === 'delete') {
-                fetch('http://localhost:8080/mp13/api/products/' + this.state.postData.data.productId, { method: 'DELETE' })
-                    .then(response => response.json())
-                    .then(response => {
+                ProductServices.DELETE(this.props.match.params.id, UserServices.getCurrentUser().data.sessionsId)
+                    .then((response) => {
+                        console.log(response)
                         handlerStatus({ response: { status: response.status, message: response.status === 200 ? 'Product successfully deleted' : 'Product failure deleted' } })
-                        if (response.status === 200) {
-                            document.getElementById("cancelButton").click()
-                        }
+                        this.props.history.push('/products')
                     })
-                    .catch((error) => {
-                        // console.log(error)
-                    });
             } else {
-                document.getElementById("cancelButton").click()
+                this.props.history.push('/products')
             }
         }
         return (
@@ -124,13 +87,13 @@ export default class ProductForm extends Component {
                                         <div className="row my-3">
                                             <div className="col">
                                                 <label className="form-label">Product Name</label>
-                                                <input type="text" className="form-control" id="productName" disabled={this.state.mode === 'view' ? true : false} />
+                                                <input type="text" className="form-control" id="productName" disabled={this.state.mode === 'view' || this.state.mode === 'delete' ? true : false} />
                                             </div>
                                         </div>
                                         <div className="row my-3">
                                             <div className="col">
                                                 <label className="form-label">Product Category</label>
-                                                <select className="form-select" defaultValue={"null"} id="productCategory" disabled={this.state.mode === 'view' ? true : false}>
+                                                <select className="form-select" defaultValue={"null"} id="productCategory" disabled={this.state.mode === 'view' || this.state.mode === 'delete' ? true : false}>
                                                     <option value={"null"}>Category...</option>
                                                     {!categories ? "" : categories.data.map((item, index) => {
                                                         return (
@@ -143,7 +106,7 @@ export default class ProductForm extends Component {
                                         <div className="row my-3">
                                             <div className="col">
                                                 <label className="form-label">Stock</label>
-                                                <input type="number" className="form-control" id="productStock" disabled={this.state.mode === 'view' ? true : false} />
+                                                <input type="number" className="form-control" id="productStock" disabled={this.state.mode === 'view' || this.state.mode === 'delete' ? true : false} />
                                             </div>
                                         </div>
                                         <div className="row">

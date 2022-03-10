@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import Button from "elements/Button";
 import Navigation from "parts/Navigation";
+import CategoryServices from "services/CategoryServices";
+import UserServices from "services/UserServices";
 
 export default class CategoryForm extends Component {
     constructor(props) {
@@ -12,21 +14,16 @@ export default class CategoryForm extends Component {
     }
 
     componentDidMount() {
-        document.title = `${document.location.pathname.split("/")[2]} Category | HAIBCA13`;
+        document.title = `${this.props.location.pathname.split("/")[2]} Category | HAIBCA13`;
         window.scrollTo(0, 0);
-        this.setState({ mode: document.location.pathname.split("/")[2] })
-
-        if (document.location.pathname.split("/").length > 2) {
-            fetch("http://localhost:8080/mp13/api/categories/" + document.location.pathname.split("/")[3])
-                .then((response) => response.json())
-                .then((responseJSON) => {
-                    this.setState({ postData: responseJSON })
-                    document.getElementById('categoryName').value = responseJSON.data.categoryName;
-                    document.getElementById('categoryDetail').value = responseJSON.data.categoryDetail;
-                })
-                .catch((error) => {
-                    // console.log(error)
-                });
+        this.setState({ mode: this.props.location.pathname.split("/")[2] })
+        if (this.props.match.params.id !== undefined) {
+            CategoryServices.GET(UserServices.getCurrentUser().data.sessionsId, this.props.match.params.id).then((response) => {
+                const json = response.data
+                this.setState({ postData: json })
+                document.getElementById('categoryName').value = json.data.categoryName;
+                document.getElementById('categoryDetail').value = json.data.categoryDetail;
+            })
         }
     }
 
@@ -34,64 +31,36 @@ export default class CategoryForm extends Component {
         const { handlerStatus } = this.props
 
         const addCategory = () => {
-            const requestOptions = {
-                method: 'POST',
-                header: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    categoryName: document.getElementById('categoryName').value,
-                    categoryDetail: document.getElementById('categoryDetail').value,
-                }),
-            }
-            fetch('http://localhost:8080/mp13/api/categories', requestOptions)
-                .then(response => response.json())
-                .then(response => {
-                    handlerStatus({ response: { status: response.status, message: response.status === 200 ? 'Category successfully added' : 'Category failure added' } })
-                    if (response.status === 200) {
-                        document.getElementById("cancelButton").click()
-                    }
-                })
-                .catch((error) => {
-                    // console.log(error)
-                });
+            CategoryServices.POST({
+                categoryName: document.getElementById('categoryName').value,
+                categoryDetail: document.getElementById('categoryDetail').value,
+                sessionId: UserServices.getCurrentUser().data.sessionsId
+            }).then((response) => {
+                handlerStatus({ response: { status: response.data.status, message: response.data.status === 200 ? 'Category successfully added' : 'Category failure added' } })
+                this.props.history.push('/categories')
+            })
         }
 
         const editCategory = () => {
-            let id = this.state.postData.data.categoryId
-            const requestOptions = {
-                method: 'PUT',
-                header: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    categoryName: document.getElementById('categoryName').value,
-                    categoryDetail: document.getElementById('categoryDetail').value,
-                }),
-            }
-            fetch('http://localhost:8080/mp13/api/categories' + id, requestOptions)
-                .then(response => response.json())
-                .then(response => {
-                    handlerStatus({ response: { status: response.status, message: response.status === 200 ? `Category id ${response.data.categoryId} successfully updated` : `Category Id ${response.data.categoryId} failure updated` } })
-                    if (response.status === 200) {
-                        document.getElementById("cancelButton").click()
-                    }
-                })
-                .catch((error) => {
-                    // console.log(error)
-                });
+            CategoryServices.PUT(this.props.match.params.id, {
+                categoryName: document.getElementById('categoryName').value,
+                categoryDetail: document.getElementById('categoryDetail').value,
+                sessionId: UserServices.getCurrentUser().data.sessionsId
+            }).then((response) => {
+                handlerStatus({ response: { status: response.data.status, message: response.data.status === 200 ? `Category id ${response.data.data.categoryId} successfully updated` : `Category Id ${response.data.data.categoryId} failure updated` } })
+                this.props.history.push('/categories')
+            })
         }
         const confirmCategory = () => {
             if (this.state.mode === 'delete') {
-                fetch('http://localhost:8080/mp13/api/categories/' + this.state.postData.data.categoryId, { method: 'DELETE' })
-                    .then(response => response.json())
-                    .then(response => {
-                        handlerStatus({ response: { status: response.status, message: response.status === 200 ? 'Category successfully deleted' : 'Category failure deleted' } })
-                        if (response.status === 200) {
-                            document.getElementById("cancelButton").click()
-                        }
+                CategoryServices.DELETE(this.props.match.params.id, UserServices.getCurrentUser().data.sessionsId)
+                    .then((response) => {
+                        console.log(Response)
+                        handlerStatus({ response: { status: response.data.status, message: response.data.status === 200 ? 'Category successfully deleted' : 'Category failure deleted' } })
+                        this.props.history.push('/categories')
                     })
-                    .catch((error) => {
-                        // console.log(error)
-                    });
             } else {
-                document.getElementById("cancelButton").click()
+                this.props.history.push('/categories')
             }
         }
         return (
@@ -111,13 +80,13 @@ export default class CategoryForm extends Component {
                                         <div className="row my-3">
                                             <div className="col">
                                                 <label className="form-label">Category Name</label>
-                                                <input type="text" className="form-control" id="categoryName" disabled={this.state.mode === 'view' ? true : false} />
+                                                <input type="text" className="form-control" id="categoryName" disabled={this.state.mode === 'view' || this.state.mode === 'delete' ? true : false} />
                                             </div>
                                         </div>
                                         <div className="row my-3">
                                             <div className="col">
                                                 <label className="form-label">Category Detail</label>
-                                                <textarea type="text" className="form-control" id="categoryDetail" rows={10} cols={30} disabled={this.state.mode === 'view' ? true : false} />
+                                                <textarea type="text" className="form-control" id="categoryDetail" rows={10} cols={30} disabled={this.state.mode === 'view' || this.state.mode === 'delete' ? true : false} />
                                             </div>
                                         </div>
                                         <div className="row">
