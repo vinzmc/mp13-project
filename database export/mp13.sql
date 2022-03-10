@@ -7,9 +7,7 @@ CREATE TABLE IF NOT EXISTS users(
     userPwd char(64) NOT NULL,
     userSalt char(32) NOT NULL,
     userName varchar(255) NOT NULL,
-    userLevel int NOT NULL,
-    dateCreated date NOT NULL,
-    lastAccess date NOT NULL);
+    userLevel int NOT NULL);
 
 CREATE TABLE IF NOT EXISTS products(
 	productId int unsigned PRIMARY KEY NOT NULL AUTO_INCREMENT,
@@ -45,4 +43,4 @@ VALUES
 /*pass = admin123*/
 INSERT INTO users
 VALUES
-	(NULL, "admin@admin.com", "75cc147ca175c351d37b62224e179d5f13cd8c8709557425a938fdb24aa67231", "41R4rsTyEvjRxYar3Trm8PSiRr21hqnm", "Admin Database Udin", 1, '2021-12-14', '2022-02-15');
+	(NULL, "admin@admin.com", "75cc147ca175c351d37b62224e179d5f13cd8c8709557425a938fdb24aa67231", "41R4rsTyEvjRxYar3Trm8PSiRr21hqnm", "Admin Database Udin", 1);
