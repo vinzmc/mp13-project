@@ -27,9 +27,7 @@ HAI BCA 2022 Mini Project Challenge, this project is mainly focused on simple da
 ## Initiating Web/Client
 7. Open project folder
 8. npm i
-9. npm cache clear --force
-10. npm install sass
-11. npm start
+9. npm start
 
 ## Default Local Server API Documentation
 http://localhost:8080/mp13/swagger-ui/index.html#/
