@@ -3,6 +3,7 @@ import Button from "elements/Button";
 import UserServices from "services/UserServices";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBoxOpen, faBoxesStacked, faUserLarge, faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons';
+import { Cookies } from "react-cookie";
 
 export default function Navigation() {
 
@@ -13,9 +14,28 @@ export default function Navigation() {
     }
 
     const handleLogout = () => {
-        UserServices.LOGOUT()
-        localStorage.clear()
-        window.location.reload()
+        
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                sessionId: UserServices.getCurrentUser().data.sessionsId
+            })
+        };
+        sessionStorage.removeItem('user');
+        const cookies = new Cookies();
+        cookies.remove('localhost');
+
+        
+        try{
+            localStorage.clear();
+            sessionStorage.clear();
+            UserServices.LOGOUT(requestOptions);
+        }catch(error){
+            console.log(error)
+        }
+
+        window.location.reload();
     }
 
     return (

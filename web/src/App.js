@@ -27,7 +27,7 @@ class App extends Component {
   render() {
     const Authauthenticated = () => {
       const session = sessionStorage.getItem('user');
-      if (!session) {
+      if (session === null) {
         return false;
       } else {
         const header = authHeader()["x-access-token"]

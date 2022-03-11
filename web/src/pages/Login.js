@@ -14,8 +14,9 @@ export default class Login extends Component {
     }
 
     componentDidMount() {
-        if (sessionStorage.getItem('user') != null) {
-            this.props.history.push('/products')
+        if (sessionStorage.getItem('user') !== null) {
+            // this.props.history.push('/products')
+            console.log(sessionStorage.getItem('user'));
         }
     }
 
@@ -36,8 +37,10 @@ export default class Login extends Component {
                 userEmail: this.state.email,
                 hashedPass: sha256(this.state.password)
             }).then(() => {
-                this.props.history.push('/products')
-                window.location.reload()
+                if (sessionStorage.getItem("user") !== null) {
+                    this.props.history.push('/products')
+                    window.location.reload()
+                }
             })
         }
 

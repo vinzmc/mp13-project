@@ -21,6 +21,7 @@ public class SessionServiceImpl implements SessionService {
     public Sessions create() {
 
         String token = hashHandlerConstructor.generateRandomString(64);
+        token = hashHandlerConstructor.toSHA256(token);
         Sessions sessions = Sessions
                 .builder()
                 .sessionid(token)

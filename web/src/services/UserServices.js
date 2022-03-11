@@ -19,15 +19,22 @@ const DELETE = (id, data) => {
 }
 
 const SIGNIN = async (data) => {
-    const response = await axios.post(API_URL + 'signin', data);
-    if (response.data.status === 200) {
-        sessionStorage.setItem("user", JSON.stringify(response.data));
-    }
-    return response;
+    const response = await axios.post(API_URL + 'signin', data)
+    .then(
+        (response)=>{
+            if (response.data.status === 200) {
+                
+                sessionStorage.setItem("user", JSON.stringify(response.data));
+            }
+            return response;
+        }
+    )
+    
 }
 
-const LOGOUT = () => {
-    sessionStorage.removeItem("user")
+const LOGOUT = async (data) => {
+    sessionStorage.removeItem("user");
+    return fetch(API_URL.concat("signout") , data);
 }
 
 const getCurrentUser = () => {

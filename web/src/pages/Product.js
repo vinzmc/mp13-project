@@ -31,6 +31,7 @@ export default class Product extends Component {
         ProductServices.GET(requestOptions, undefined)
             .then(response => response.json())
             .then((responseData) => {
+                console.log(responseData);
                 let data = []
                 let i = 0;
                 let j = 0;
